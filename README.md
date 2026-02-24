@@ -1,5 +1,7 @@
 📘 Portfólio Acadêmico
+
 Engenharia de Prompt e Inteligência Artificial
+
 👨‍🎓 Estudante
 
 Nome: Flávio de Oliveira Campos
@@ -17,6 +19,7 @@ Com o avanço dos conteúdos e das atividades práticas, houve evolução na cap
 Atualmente, o aprendizado encontra-se em fase de consolidação, com maior autonomia e segurança no uso das ferramentas estudadas.
 
 📚 Conteúdo Programático
+
 🛫 Unidade I — Engenharia de Prompt
 
 Introdução a Machine Learning e LLMs
