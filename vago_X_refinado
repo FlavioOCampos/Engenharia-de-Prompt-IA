@@ -1,0 +1,113 @@
+Refinamento de Prompts em Desenvolvimento de Sistemas
+
+Aula 5 – Exercícios Práticos – 23/03/26
+
+Objetivo
+
+Este trabalho tem como objetivo demonstrar como o refinamento de prompts melhora a qualidade das respostas geradas por IA no desenvolvimento de sistemas, incluindo geração de código, refatoração, documentação, comparação de tecnologias e criação de testes automatizados.
+
+1. Geração de Código
+Prompt inicial (vago)
+Crie um código em Python para calcular a soma de números.
+Prompt refinado
+Crie um código em Python que receba uma lista de números inteiros como entrada e retorne a soma. Inclua comentários explicativos em cada etapa e valide se a lista está vazia antes de calcular.
+Comparação dos resultados
+Critério	Prompt Vago	Prompt Refinado
+Entrada de dados	Usuário digitando números	Lista de números
+Validação	Não	Sim
+Comentários	Poucos	Sim
+Organização	Simples	Estruturado
+Reutilização	Baixa	Alta
+Utilidade prática	Média	Alta
+Conclusão
+
+O prompt refinado gerou um código mais organizado, reutilizável e com validações, tornando o resultado mais útil para desenvolvimento real.
+
+2. Refatoração de Código
+Prompt inicial (vago)
+Melhore este código.
+Prompt refinado
+Refatore este código em JavaScript para torná-lo mais legível e eficiente. Use boas práticas de programação, como nomes de variáveis claros e funções reutilizáveis. Explique as mudanças realizadas.
+Comparação
+Critério	Prompt Vago	Prompt Refinado
+Legibilidade	Média	Alta
+Funções reutilizáveis	Não	Sim
+Explicação	Pouca	Detalhada
+Boas práticas	Poucas	Sim
+Organização	Simples	Estruturada
+Conclusão
+
+O prompt refinado resultou em uma refatoração mais profissional, com boas práticas e explicações das mudanças.
+
+3. Documentação Técnica
+Prompt inicial (vago)
+Explique este código.
+Prompt refinado
+Explique este código em Python como se fosse uma documentação técnica para desenvolvedores iniciantes. Estruture a explicação em três partes: objetivo do código, descrição das funções e exemplos de uso.
+Comparação
+Critério	Prompt Vago	Prompt Refinado
+Estrutura	Não	Sim
+Documentação técnica	Não	Sim
+Exemplos	Não	Sim
+Clareza	Média	Alta
+Aplicação profissional	Baixa	Alta
+Conclusão
+
+O refinamento transformou uma explicação simples em uma documentação técnica estruturada.
+
+4. Comparação de Tecnologias
+Prompt inicial (vago)
+Compare Java e Python.
+Prompt refinado
+Compare Java e Python em uma tabela com quatro colunas: paradigma de programação, desempenho, curva de aprendizado e principais aplicações em desenvolvimento de sistemas corporativos.
+Comparação Java vs Python
+Critério	Java	Python
+Paradigma	Orientado a objetos	Multiparadigma
+Desempenho	Alto	Médio
+Curva de aprendizado	Média/Difícil	Fácil
+Aplicações	Sistemas corporativos	IA, dados, automação
+Conclusão
+
+O formato em tabela facilitou a análise e comparação entre as tecnologias.
+
+5. Criação de Testes Automatizados
+Prompt inicial (vago)
+Crie um teste para este código.
+Prompt refinado
+Crie um teste unitário em Python usando a biblioteca unittest para verificar se a função calcular_media(lista) retorna corretamente a média dos valores. Inclua casos de teste para lista vazia e lista com valores negativos.
+Comparação
+Critério	Prompt Vago	Prompt Refinado
+Biblioteca específica	Não	Sim
+Casos de teste	Poucos	Vários
+Estrutura de teste	Simples	Profissional
+Utilidade prática	Média	Alta
+Conclusão
+
+O prompt refinado gerou testes mais completos e próximos de um ambiente profissional.
+
+Conclusão Geral
+
+O refinamento de prompts melhora significativamente a qualidade das respostas geradas por IA. Prompts vagos geram respostas genéricas, enquanto prompts refinados geram respostas mais completas, organizadas e úteis para o desenvolvimento de sistemas.
+
+Principais melhorias com prompts refinados:
+Maior precisão
+Melhor organização
+Código mais reutilizável
+Documentação estruturada
+Testes mais completos
+Respostas mais profissionais
+Melhor aplicabilidade prática
+Boas Práticas de Prompting para Desenvolvimento de Sistemas
+Especificar a linguagem de programação
+Informar o objetivo do código
+Definir formato da resposta (tabela, documentação, etc.)
+Pedir comentários no código
+Solicitar validações
+Pedir exemplos de uso
+Informar bibliotecas a serem utilizadas
+Definir o público-alvo (iniciante, desenvolvedor, etc.)
+Solicitar explicação das mudanças
+Ser específico e detalhado no prompt
+Conclusão Final
+
+O refinamento de prompts é uma técnica importante para obter respostas mais precisas e úteis de sistemas de IA. Em desenvolvimento de software, prompts refinados ajudam a gerar códigos melhores, documentação mais clara, testes mais completos e análises mais organizadas, aumentando a produtividade e a qualidade do trabalho.
