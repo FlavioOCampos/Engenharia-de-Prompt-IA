@@ -187,6 +187,24 @@ O refinamento de prompts melhora significativamente a qualidade das respostas ge
 
 ---
 
+## Análise Comparativa – Prompt Vago vs Prompt Refinado  
+Foi elaborado um gráfico comparando a qualidade das respostas geradas pela IA utilizando prompts vagos e prompts refinados nos exercícios propostos.
+A avaliação considerou critérios como:  
+- Clareza  
+- Organização  
+- Estrutura  
+- Aplicabilidade prática  
+- Uso de boas práticas de programação
+- <img width="567" height="455" alt="grafico_comparativo" src="https://github.com/user-attachments/assets/2aa963f0-71da-4eb7-b712-1b23aa54ad9b" />
+
+
+
+Os resultados mostram que os prompts refinados apresentaram qualidade significativamente superior aos prompts vagos em todos os exercícios, demonstrando a importância do refinamento de prompts no desenvolvimento de sistemas com apoio de Inteligência Artificial.
+
+
+
+---
+
 ## Aprendizado
 
 Este exercício demonstrou que a forma como o prompt é escrito influencia diretamente a qualidade da resposta da IA. Quanto mais detalhado, estruturado e específico for o prompt, melhor será o resultado obtido.
