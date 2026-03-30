@@ -4,6 +4,9 @@ Aula 5 – Exercícios Práticos – 23/03/26
 
 Objetivo
 
+<img width="511" height="787" alt="prompt_refinado_explicado" src="https://github.com/user-attachments/assets/b7d361a7-aad8-420a-b5e5-66349edf66df" />
+
+
 Este trabalho tem como objetivo demonstrar como o refinamento de prompts melhora a qualidade das respostas geradas por Inteligência Artificial no contexto de desenvolvimento de sistemas, incluindo geração de código, refatoração, documentação técnica, comparação de tecnologias e criação de testes automatizados.
 
 O exercício consiste em comparar prompts vagos com prompts refinados e analisar como o refinamento melhora a precisão, organização e utilidade das respostas.
