@@ -31,5 +31,5 @@ A adoção da IA não substitui o desenvolvedor, mas cria o "Desenvolvedor Aumen
 *   **Estudos Citados:** Lee, Goldberg e Kohane (2024); Murta (2023).
 
 ### Ferramenta de IA de Apoio:
-Este texto foi estruturado e rascunhado com o apoio da IA **[NOME DA FERRAMENTA QUE VOCÊ ESTÁ USANDO AGORA]**, sob supervisão e revisão final humana para garantir conformidade com os requisitos da disciplina.
+Este texto foi estruturado e rascunhado com o apoio da IA **[Gemini]**, sob supervisão e revisão final humana para garantir conformidade com os requisitos da disciplina.
 
