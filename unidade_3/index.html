@@ -1,59 +1,465 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation Presence Checker</title>
+    <title>Chamada de Presença - UDF</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
-        header { background: #007bff; color: #ffffff; padding: 10px 20px; text-align: center; }
-        main { padding: 20px; }
-        form { margin-bottom: 20px; }
-        input[type='text'], input[type='submit'] { padding: 10px; margin: 5px; width: 200px; }
-        footer { text-align: center; margin-top: 20px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+        
+        header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        
+        .info-box h3 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .info-box p {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type='text'],
+        input[type='number'] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type='text']:focus,
+        input[type='number']:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .horario-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+        
+        .horario-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+        
+        .btn-verificar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-verificar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-verificar:active {
+            transform: translateY(0);
+        }
+        
+        .btn-limpar {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+        
+        .btn-limpar:hover {
+            background: #e0e0e0;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .resultado {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .resultado.sucesso {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .resultado.erro {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .resultado.aviso {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+        
+        .resultado h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .resultado p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .dados-detalhes {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+        
+        .dados-detalhes p {
+            margin-bottom: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .erro-mensagem {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Geolocation Presence Checker</h1>
-    </header>
-    <main>
-        <form id="locationForm">
-            <input type="text" id="locationInput" placeholder="Enter your location" required>
-            <input type="submit" value="Check Location">
+    <div class="container">
+        <header>
+            <h1>📍 Chamada de Presença</h1>
+            <p>Faculdade UDF - Asa Sul</p>
+        </header>
+        
+        <div class="info-box">
+            <h3>📌 Informações da Aula:</h3>
+            <p><strong>Horário:</strong> 19:00 às 22:30</p>
+            <p><strong>Raio Permitido:</strong> 50 metros</p>
+            <p><strong>Local:</strong> SEPS 704/904 - Conjunto A, Asa Sul, Brasília - DF</p>
+        </div>
+        
+        <div class="horario-info">
+            <strong>⏰ Horário Atual:</strong>
+            <span id="horarioAtual">--:--:--</span>
+            <br>
+            <small id="statusHorario">Aguardando sincronização...</small>
+        </div>
+        
+        <form id="formPresenca">
+            <div class="form-group">
+                <label for="nomeAluno">Nome do Aluno *</label>
+                <input type="text" id="nomeAluno" placeholder="Digite seu nome completo" required>
+                <div class="erro-mensagem" id="erroNome">Por favor, preencha o nome</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="rgmAluno">RGM (Matrícula) *</label>
+                <input type="text" id="rgmAluno" placeholder="Digite seu RGM" required>
+                <div class="erro-mensagem" id="erroRGM">Por favor, preencha o RGM</div>
+            </div>
+            
+            <button type="submit" class="btn-verificar">🚀 VERIFICAR PRESENÇA</button>
+            <button type="button" class="btn-limpar" onclick="limparDados()">🔄 LIMPAR DADOS</button>
         </form>
-        <div id="output"></div>
-    </main>
-    <footer>
-        <p>&copy; 2026 Geolocation Checker</p>
-    </footer>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Obtendo sua localização...</p>
+        </div>
+        
+        <div class="resultado" id="resultado"></div>
+        
+        <footer>
+            <p>🔒 Sua localização é processada apenas localmente no navegador.</p>
+            <p>Nenhum dado é enviado para servidores externos.</p>
+        </footer>
+    </div>
+    
     <script>
-        document.getElementById('locationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
+        // Coordenadas da UDF - Asa Sul
+        const UDF_LAT = -15.8026769;
+        const UDF_LON = -47.8994031;
+        const RAIO_PERMITIDO = 50; // metros
+        const HORA_INICIO = 19;
+        const MINUTO_INICIO = 0;
+        const HORA_FIM = 22;
+        const MINUTO_FIM = 30;
+        
+        // Atualizar horário em tempo real
+        function atualizarHorario() {
+            const agora = new Date();
+            const horas = String(agora.getHours()).padStart(2, '0');
+            const minutos = String(agora.getMinutes()).padStart(2, '0');
+            const segundos = String(agora.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('horarioAtual').textContent = `${horas}:${minutos}:${segundos}`;
+            
+            // Verificar se está no horário
+            const tempoAtual = agora.getHours() * 60 + agora.getMinutes();
+            const tempoInicio = HORA_INICIO * 60 + MINUTO_INICIO;
+            const tempoFim = HORA_FIM * 60 + MINUTO_FIM;
+            
+            const statusElement = document.getElementById('statusHorario');
+            if (tempoAtual >= tempoInicio && tempoAtual <= tempoFim) {
+                statusElement.textContent = '✅ Horário de aula (19:00 - 22:30)';
+                statusElement.style.color = '#28a745';
             } else {
-                document.getElementById('output').innerHTML = "Geolocation is not supported by this browser.";
+                statusElement.textContent = '⏰ Fora do horário de aula';
+                statusElement.style.color = '#dc3545';
+            }
+        }
+        
+        // Atualizar horário a cada segundo
+        setInterval(atualizarHorario, 1000);
+        atualizarHorario(); // Atualizar imediatamente
+        
+        // Calcular distância usando Haversine
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371000; // Raio da Terra em metros
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+        
+        // Verificar se está no horário
+        function verificarHorario() {
+            const agora = new Date();
+            const tempoAtual = agora.getHours() * 60 + agora.getMinutes();
+            const tempoInicio = HORA_INICIO * 60 + MINUTO_INICIO;
+            const tempoFim = HORA_FIM * 60 + MINUTO_FIM;
+            return tempoAtual >= tempoInicio && tempoAtual <= tempoFim;
+        }
+        
+        // Formatar coordenadas
+        function formatarCoordenada(valor) {
+            return Math.abs(valor).toFixed(7) + (valor < 0 ? 'S/O' : 'N/L');
+        }
+        
+        // Limpar dados
+        function limparDados() {
+            document.getElementById('formPresenca').reset();
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        // Submit do formulário
+        document.getElementById('formPresenca').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nomeAluno').value.trim();
+            const rgm = document.getElementById('rgmAluno').value.trim();
+            
+            // Validar
+            if (!nome) {
+                document.getElementById('erroNome').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('erroNome').style.display = 'none';
+            }
+            
+            if (!rgm) {
+                document.getElementById('erroRGM').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('erroRGM').style.display = 'none';
+            }
+            
+            // Mostrar loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultado').style.display = 'none';
+            
+            // Obter localização
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        // Calcular distância
+                        const distancia = calcularDistancia(UDF_LAT, UDF_LON, lat, lon);
+                        
+                        // Verificar horário
+                        const horarioValido = verificarHorario();
+                        
+                        // Processar resultado
+                        processarResultado(nome, rgm, lat, lon, distancia, horarioValido);
+                    },
+                    function(error) {
+                        document.getElementById('loading').style.display = 'none';
+                        mostrarErro('Erro ao obter localização: ' + error.message);
+                    }
+                );
+            } else {
+                document.getElementById('loading').style.display = 'none';
+                mostrarErro('Geolocalização não é suportada por este navegador.');
             }
         });
-        function showPosition(position) {
-            document.getElementById('output').innerHTML = 'Latitude: ' + position.coords.latitude + '<br>Longitude: ' + position.coords.longitude;
-        }
-        function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById('output').innerHTML = "User denied the request for Geolocation.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById('output').innerHTML = "Location information is unavailable.";
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById('output').innerHTML = "The request to get user location timed out.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById('output').innerHTML = "An unknown error occurred.";
-                    break;
+        
+        // Processar resultado
+        function processarResultado(nome, rgm, lat, lon, distancia, horarioValido) {
+            document.getElementById('loading').style.display = 'none';
+            const resultadoDiv = document.getElementById('resultado');
+            
+            let titulo, mensagem, classe;
+            
+            if (!horarioValido) {
+                titulo = '⏰ FORA DO HORÁRIO';
+                mensagem = 'Você está tentando fazer presença fora do horário de aula (19:00 - 22:30).';
+                classe = 'aviso';
+            } else if (distancia <= RAIO_PERMITIDO) {
+                titulo = '✅ PRESENÇA CONFIRMADA';
+                mensagem = `Bem-vindo, ${nome}! Sua presença foi registrada com sucesso.`;
+                classe = 'sucesso';
+            } else {
+                titulo = '❌ PRESENÇA NEGADA';
+                mensagem = `Você está a ${distancia.toFixed(1)}m da sala. Distância máxima permitida: ${RAIO_PERMITIDO}m.`;
+                classe = 'erro';
             }
+            
+            const agora = new Date();
+            const horaFormatada = String(agora.getHours()).padStart(2, '0') + ':' + 
+                                 String(agora.getMinutes()).padStart(2, '0') + ':' + 
+                                 String(agora.getSeconds()).padStart(2, '0');
+            
+            resultadoDiv.innerHTML = `
+                <h3>${titulo}</h3>
+                <p>${mensagem}</p>
+                <div class="dados-detalhes">
+                    <p><strong>Nome:</strong> ${nome}</p>
+                    <p><strong>RGM:</strong> ${rgm}</p>
+                    <p><strong>Horário:</strong> ${horaFormatada}</p>
+                    <p><strong>Sua Localização:</strong> ${lat.toFixed(7)}, ${lon.toFixed(7)}</p>
+                    <p><strong>Distância da Sala:</strong> ${distancia.toFixed(2)} metros</p>
+                </div>
+            `;
+            
+            resultadoDiv.className = 'resultado ' + classe;
+            resultadoDiv.style.display = 'block';
+        }
+        
+        // Mostrar erro
+        function mostrarErro(mensagem) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = `
+                <h3>❌ ERRO</h3>
+                <p>${mensagem}</p>
+            `;
+            resultadoDiv.className = 'resultado erro';
+            resultadoDiv.style.display = 'block';
         }
     </script>
 </body>
