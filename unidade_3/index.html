@@ -66,6 +66,22 @@
             color: #555;
             font-size: 13px;
             line-height: 1.5;
+            margin-bottom: 5px;
+        }
+        
+        .horario-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+        
+        .horario-info strong {
+            display: block;
+            margin-bottom: 5px;
         }
         
         .form-group {
@@ -97,23 +113,14 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        .horario-info {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #856404;
-        }
-        
-        .horario-info strong {
-            display: block;
-            margin-bottom: 5px;
+        .botoes-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
         }
         
         button {
-            width: 100%;
             padding: 14px;
             border: none;
             border-radius: 8px;
@@ -121,31 +128,41 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 12px;
         }
         
-        .btn-verificar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-entrada {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
         }
         
-        .btn-verificar:hover {
+        .btn-entrada:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
         }
         
-        .btn-verificar:active {
-            transform: translateY(0);
+        .btn-saida {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .btn-saida:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 53, 69, 0.3);
         }
         
         .btn-limpar {
             background: #f0f0f0;
             color: #333;
             border: 2px solid #ddd;
+            width: 100%;
         }
         
         .btn-limpar:hover {
             background: #e0e0e0;
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         .loading {
@@ -217,6 +234,37 @@
             margin-bottom: 5px;
         }
         
+        .historico {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .historico h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .historico-item {
+            padding: 8px;
+            margin-bottom: 8px;
+            background: white;
+            border-left: 3px solid #667eea;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        
+        .historico-entrada {
+            border-left-color: #28a745;
+        }
+        
+        .historico-saida {
+            border-left-color: #dc3545;
+        }
+        
         footer {
             text-align: center;
             margin-top: 25px;
@@ -231,6 +279,27 @@
             font-size: 13px;
             margin-top: 5px;
             display: none;
+        }
+
+        .status-presenca {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .status-presente {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+
+        .status-ausente {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #dc3545;
         }
     </style>
 </head>
@@ -268,7 +337,11 @@
                 <div class="erro-mensagem" id="erroRGM">Por favor, preencha o RGM</div>
             </div>
             
-            <button type="submit" class="btn-verificar">🚀 VERIFICAR PRESENÇA</button>
+            <div class="botoes-container">
+                <button type="button" class="btn-entrada" onclick="registrarEntrada()">✅ ENTRADA</button>
+                <button type="button" class="btn-saida" onclick="registrarSaida()">🚪 SAÍDA</button>
+            </div>
+            
             <button type="button" class="btn-limpar" onclick="limparDados()">🔄 LIMPAR DADOS</button>
         </form>
         
@@ -278,6 +351,11 @@
         </div>
         
         <div class="resultado" id="resultado"></div>
+        
+        <div class="historico" id="historico" style="display: none;">
+            <h4>📋 Histórico de Presença</h4>
+            <div id="listaHistorico"></div>
+        </div>
         
         <footer>
             <p>🔒 Sua localização é processada apenas localmente no navegador.</p>
@@ -294,6 +372,22 @@
         const MINUTO_INICIO = 0;
         const HORA_FIM = 22;
         const MINUTO_FIM = 30;
+        
+        let historico = [];
+        let alunoDados = {};
+        
+        // Carregar histórico do localStorage
+        function carregarHistorico() {
+            const dados = localStorage.getItem('historicoPresenca');
+            if (dados) {
+                historico = JSON.parse(dados);
+            }
+        }
+        
+        // Salvar histórico no localStorage
+        function salvarHistorico() {
+            localStorage.setItem('historicoPresenca', JSON.stringify(historico));
+        }
         
         // Atualizar horário em tempo real
         function atualizarHorario() {
@@ -321,7 +415,7 @@
         
         // Atualizar horário a cada segundo
         setInterval(atualizarHorario, 1000);
-        atualizarHorario(); // Atualizar imediatamente
+        atualizarHorario();
         
         // Calcular distância usando Haversine
         function calcularDistancia(lat1, lon1, lat2, lon2) {
@@ -344,59 +438,45 @@
             return tempoAtual >= tempoInicio && tempoAtual <= tempoFim;
         }
         
-        // Formatar coordenadas
-        function formatarCoordenada(valor) {
-            return Math.abs(valor).toFixed(7) + (valor < 0 ? 'S/O' : 'N/L');
-        }
-        
-        // Limpar dados
-        function limparDados() {
-            document.getElementById('formPresenca').reset();
-            document.getElementById('resultado').style.display = 'none';
-            document.getElementById('loading').style.display = 'none';
-        }
-        
-        // Submit do formulário
-        document.getElementById('formPresenca').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        // Validar formulário
+        function validarFormulario() {
             const nome = document.getElementById('nomeAluno').value.trim();
             const rgm = document.getElementById('rgmAluno').value.trim();
             
-            // Validar
             if (!nome) {
                 document.getElementById('erroNome').style.display = 'block';
-                return;
+                return false;
             } else {
                 document.getElementById('erroNome').style.display = 'none';
             }
             
             if (!rgm) {
                 document.getElementById('erroRGM').style.display = 'block';
-                return;
+                return false;
             } else {
                 document.getElementById('erroRGM').style.display = 'none';
             }
             
-            // Mostrar loading
+            alunoDados = { nome, rgm };
+            return true;
+        }
+        
+        // Registrar Entrada
+        function registrarEntrada() {
+            if (!validarFormulario()) return;
+            
             document.getElementById('loading').style.display = 'block';
             document.getElementById('resultado').style.display = 'none';
             
-            // Obter localização
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
-                        
-                        // Calcular distância
                         const distancia = calcularDistancia(UDF_LAT, UDF_LON, lat, lon);
-                        
-                        // Verificar horário
                         const horarioValido = verificarHorario();
                         
-                        // Processar resultado
-                        processarResultado(nome, rgm, lat, lon, distancia, horarioValido);
+                        processarEntrada(alunoDados.nome, alunoDados.rgm, lat, lon, distancia, horarioValido);
                     },
                     function(error) {
                         document.getElementById('loading').style.display = 'none';
@@ -407,33 +487,76 @@
                 document.getElementById('loading').style.display = 'none';
                 mostrarErro('Geolocalização não é suportada por este navegador.');
             }
-        });
+        }
         
-        // Processar resultado
-        function processarResultado(nome, rgm, lat, lon, distancia, horarioValido) {
+        // Registrar Saída
+        function registrarSaida() {
+            if (!validarFormulario()) return;
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultado').style.display = 'none';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const distancia = calcularDistancia(UDF_LAT, UDF_LON, lat, lon);
+                        const horarioValido = verificarHorario();
+                        
+                        processarSaida(alunoDados.nome, alunoDados.rgm, lat, lon, distancia, horarioValido);
+                    },
+                    function(error) {
+                        document.getElementById('loading').style.display = 'none';
+                        mostrarErro('Erro ao obter localização: ' + error.message);
+                    }
+                );
+            } else {
+                document.getElementById('loading').style.display = 'none';
+                mostrarErro('Geolocalização não é suportada por este navegador.');
+            }
+        }
+        
+        // Processar Entrada
+        function processarEntrada(nome, rgm, lat, lon, distancia, horarioValido) {
             document.getElementById('loading').style.display = 'none';
             const resultadoDiv = document.getElementById('resultado');
-            
-            let titulo, mensagem, classe;
-            
-            if (!horarioValido) {
-                titulo = '⏰ FORA DO HORÁRIO';
-                mensagem = 'Você está tentando fazer presença fora do horário de aula (19:00 - 22:30).';
-                classe = 'aviso';
-            } else if (distancia <= RAIO_PERMITIDO) {
-                titulo = '✅ PRESENÇA CONFIRMADA';
-                mensagem = `Bem-vindo, ${nome}! Sua presença foi registrada com sucesso.`;
-                classe = 'sucesso';
-            } else {
-                titulo = '❌ PRESENÇA NEGADA';
-                mensagem = `Você está a ${distancia.toFixed(1)}m da sala. Distância máxima permitida: ${RAIO_PERMITIDO}m.`;
-                classe = 'erro';
-            }
-            
             const agora = new Date();
             const horaFormatada = String(agora.getHours()).padStart(2, '0') + ':' + 
                                  String(agora.getMinutes()).padStart(2, '0') + ':' + 
                                  String(agora.getSeconds()).padStart(2, '0');
+            
+            let titulo, mensagem, classe;
+            let presenca = false;
+            
+            if (!horarioValido) {
+                titulo = '⏰ ENTRADA FORA DO HORÁRIO';
+                mensagem = 'Entrada registrada, mas você está tentando entrar fora do horário de aula (19:00 - 22:30).';
+                classe = 'aviso';
+            } else if (distancia <= RAIO_PERMITIDO) {
+                titulo = '✅ ENTRADA CONFIRMADA';
+                mensagem = `Bem-vindo, ${nome}! Sua entrada foi registrada com sucesso.`;
+                classe = 'sucesso';
+                presenca = true;
+            } else {
+                titulo = '❌ ENTRADA NEGADA';
+                mensagem = `Você está a ${distancia.toFixed(1)}m da sala. Distância máxima permitida: ${RAIO_PERMITIDO}m.`;
+                classe = 'erro';
+            }
+            
+            // Adicionar ao histórico
+            historico.push({
+                tipo: 'ENTRADA',
+                nome: nome,
+                rgm: rgm,
+                hora: horaFormatada,
+                distancia: distancia.toFixed(2),
+                localizacao: `${lat.toFixed(7)}, ${lon.toFixed(7)}`,
+                presenca: presenca,
+                data: new Date().toLocaleDateString('pt-BR')
+            });
+            salvarHistorico();
+            atualizarHistoricoUI();
             
             resultadoDiv.innerHTML = `
                 <h3>${titulo}</h3>
@@ -441,7 +564,55 @@
                 <div class="dados-detalhes">
                     <p><strong>Nome:</strong> ${nome}</p>
                     <p><strong>RGM:</strong> ${rgm}</p>
-                    <p><strong>Horário:</strong> ${horaFormatada}</p>
+                    <p><strong>Horário de Entrada:</strong> ${horaFormatada}</p>
+                    <p><strong>Sua Localização:</strong> ${lat.toFixed(7)}, ${lon.toFixed(7)}</p>
+                    <p><strong>Distância da Sala:</strong> ${distancia.toFixed(2)} metros</p>
+                </div>
+                <div class="status-presenca ${presenca ? 'status-presente' : 'status-ausente'}">
+                    ${presenca ? '✅ PRESENTE' : '❌ AUSENTE'}
+                </div>
+            `;
+            
+            resultadoDiv.className = 'resultado ' + classe;
+            resultadoDiv.style.display = 'block';
+        }
+        
+        // Processar Saída
+        function processarSaida(nome, rgm, lat, lon, distancia, horarioValido) {
+            document.getElementById('loading').style.display = 'none';
+            const resultadoDiv = document.getElementById('resultado');
+            const agora = new Date();
+            const horaFormatada = String(agora.getHours()).padStart(2, '0') + ':' + 
+                                 String(agora.getMinutes()).padStart(2, '0') + ':' + 
+                                 String(agora.getSeconds()).padStart(2, '0');
+            
+            let titulo, mensagem, classe;
+            
+            titulo = '🚪 SAÍDA REGISTRADA';
+            mensagem = `Sua saída foi registrada com sucesso, ${nome}!`;
+            classe = 'sucesso';
+            
+            // Adicionar ao histórico
+            historico.push({
+                tipo: 'SAÍDA',
+                nome: nome,
+                rgm: rgm,
+                hora: horaFormatada,
+                distancia: distancia.toFixed(2),
+                localizacao: `${lat.toFixed(7)}, ${lon.toFixed(7)}`,
+                presenca: true,
+                data: new Date().toLocaleDateString('pt-BR')
+            });
+            salvarHistorico();
+            atualizarHistoricoUI();
+            
+            resultadoDiv.innerHTML = `
+                <h3>${titulo}</h3>
+                <p>${mensagem}</p>
+                <div class="dados-detalhes">
+                    <p><strong>Nome:</strong> ${nome}</p>
+                    <p><strong>RGM:</strong> ${rgm}</p>
+                    <p><strong>Horário de Saída:</strong> ${horaFormatada}</p>
                     <p><strong>Sua Localização:</strong> ${lat.toFixed(7)}, ${lon.toFixed(7)}</p>
                     <p><strong>Distância da Sala:</strong> ${distancia.toFixed(2)} metros</p>
                 </div>
@@ -449,6 +620,34 @@
             
             resultadoDiv.className = 'resultado ' + classe;
             resultadoDiv.style.display = 'block';
+        }
+        
+        // Atualizar UI do histórico
+        function atualizarHistoricoUI() {
+            if (historico.length === 0) {
+                document.getElementById('historico').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('historico').style.display = 'block';
+            const listaHTML = historico.map((item, index) => `
+                <div class="historico-item historico-${item.tipo.toLowerCase()}">
+                    <strong>${item.tipo}</strong> - ${item.nome} (RGM: ${item.rgm})<br>
+                    <small>Horário: ${item.hora} | Distância: ${item.distancia}m | ${item.data}</small>
+                </div>
+            `).join('');
+            
+            document.getElementById('listaHistorico').innerHTML = listaHTML;
+        }
+        
+        // Limpar dados
+        function limparDados() {
+            document.getElementById('formPresenca').reset();
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            historico = [];
+            salvarHistorico();
+            document.getElementById('historico').style.display = 'none';
         }
         
         // Mostrar erro
@@ -461,6 +660,10 @@
             resultadoDiv.className = 'resultado erro';
             resultadoDiv.style.display = 'block';
         }
+        
+        // Carregar histórico ao iniciar
+        carregarHistorico();
+        atualizarHistoricoUI();
     </script>
 </body>
 </html>
