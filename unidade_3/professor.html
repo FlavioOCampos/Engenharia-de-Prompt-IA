@@ -112,11 +112,13 @@ h2{
 <div class="card">
 
     <div class="topo">
+
         <h1>Professor</h1>
 
         <div class="badge" id="contador">
             0 alunos
         </div>
+
     </div>
 
     <input
@@ -185,6 +187,9 @@ window.iniciarAula = async function(){
 
         const longitude = posicao.coords.longitude;
 
+        // LIMPAR MAPA
+        document.getElementById("mapa").innerHTML = "";
+
         // MAPA
         const mapa = L.map('mapa').setView(
             [latitude, longitude],
@@ -211,7 +216,7 @@ window.iniciarAula = async function(){
         const codigo =
         Math.random().toString(36).substring(2,7);
 
-        // SALVAR FIREBASE
+        // SALVAR AULA
         await setDoc(
             doc(db, "aulas", codigo),
             {
@@ -220,12 +225,6 @@ window.iniciarAula = async function(){
                 longitude: longitude,
                 criadaEm: new Date().toLocaleString()
             }
-        );
-
-        // SALVAR LOCAL
-        localStorage.setItem(
-            "codigoAula",
-            codigo
         );
 
         // LINK ALUNO
@@ -295,9 +294,9 @@ function carregarPresencas(){
             ).innerHTML =
             snapshot.size + " alunos";
 
-            snapshot.forEach((doc)=>{
+            snapshot.forEach((docItem)=>{
 
-                const dados = doc.data();
+                const dados = docItem.data();
 
                 lista.innerHTML += `
 
