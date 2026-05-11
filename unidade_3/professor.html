@@ -1,70 +1,158 @@
 <!DOCTYPE html>
+<html lang="pt-br">
+<head>
 
-    });
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-}
+<title>Painel Professor</title>
 
-const lista = document.getElementById('listaPresencas');
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Painel do Professor</h1>
+
+<input type="text" id="materia" placeholder="Digite a matéria">
+
+<button onclick="usarLocalizacao()">
+Usar minha localização
+</button>
+
+<div id="dadosLocalizacao"></div>
+
+<br>
+
+<a id="linkAluno" target="_blank"></a>
+
+<br><br>
+
+<a id="linkMapa" target="_blank"></a>
+
+<h2>Alunos presentes</h2>
+
+<div id="listaPresencas"></div>
+
+<br>
+
+<button onclick="exportarCSV()">
+Exportar CSV
+</button>
+
+</div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 
 let dadosCSV = [];
 
-onSnapshot(collection(db, 'presencas'), (snapshot)=>{
+window.usarLocalizacao = function(){
 
-    lista.innerHTML = '';
+navigator.geolocation.getCurrentPosition((posicao)=>{
 
-    dadosCSV = [];
+const lat = posicao.coords.latitude;
+const long = posicao.coords.longitude;
 
-    snapshot.forEach((doc)=>{
+document.getElementById("dadosLocalizacao").innerHTML = `
+<p>Latitude: ${lat}</p>
+<p>Longitude: ${long}</p>
+`;
 
-        const dados = doc.data();
+const linkAluno =
+`aluno.html?lat=${lat}&long=${long}`;
 
-        dadosCSV.push(dados);
+const linkMapa =
+`mapa.html?lat=${lat}&long=${long}`;
 
-        lista.innerHTML += `
+document.getElementById("linkAluno").href = linkAluno;
+document.getElementById("linkAluno").innerText =
+"Abrir página do aluno";
 
-            <div class="cardAluno">
-
-                <strong>${dados.nome}</strong>
-
-                <p>Matrícula: ${dados.matricula}</p>
-
-                <p>Turma: ${dados.turma}</p>
-
-                <p>Distância: ${dados.distancia} metros</p>
-
-                <p>${dados.data}</p>
-
-            </div>
-
-        `;
-
-    });
+document.getElementById("linkMapa").href = linkMapa;
+document.getElementById("linkMapa").innerText =
+"Abrir mapa da aula";
 
 });
 
+};
+
+
+const lista = document.getElementById("listaPresencas");
+
+onSnapshot(collection(db, "presencas"), (snapshot)=>{
+
+lista.innerHTML = "";
+
+dadosCSV = [];
+
+snapshot.forEach((doc)=>{
+
+const dados = doc.data();
+
+dadosCSV.push(dados);
+
+lista.innerHTML += `
+
+<div class="cardAluno">
+
+<h3>${dados.nome}</h3>
+
+<p>Matrícula: ${dados.matricula}</p>
+
+<p>Turma: ${dados.turma}</p>
+
+<p>Distância: ${dados.distancia} metros</p>
+
+<p>${dados.data}</p>
+
+</div>
+
+`;
+
+});
+
+});
+
+
 window.exportarCSV = function(){
 
-    let csv = 'Nome,Matrícula,Turma,Distância,Data\n';
+let csv =
+"Nome,Matrícula,Turma,Distância,Data\n";
 
-    dadosCSV.forEach((item)=>{
+dadosCSV.forEach((item)=>{
 
-        csv += `${item.nome},${item.matricula},${item.turma},${item.distancia},${item.data}\n`;
+csv +=
+`${item.nome},${item.matricula},${item.turma},${item.distancia},${item.data}\n`;
 
-    });
+});
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+const blob =
+new Blob([csv], { type: "text/csv" });
 
-    const url = URL.createObjectURL(blob);
+const url =
+URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
+const a =
+document.createElement("a");
 
-    a.href = url;
+a.href = url;
 
-    a.download = 'presencas.csv';
+a.download = "presencas.csv";
 
-    a.click();
+a.click();
 
-}
+};
 
 </script>
 
