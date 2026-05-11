@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Painel Professor</title>
-    
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -95,7 +95,7 @@ button{
 h2{
     margin-top:20px;
 }
-    
+
 #mapa{
     width:100%;
     height:300px;
@@ -103,7 +103,7 @@ h2{
     border-radius:20px;
     overflow:hidden;
 }
-    
+
 </style>
 </head>
 
@@ -130,6 +130,7 @@ h2{
     </button>
 
     <div id="areaLink"></div>
+
     <div id="mapa"></div>
 
     <h2>Presenças</h2>
@@ -140,19 +141,20 @@ h2{
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
     getFirestore,
     doc,
     setDoc,
     collection,
-    addDoc,
     onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-// COLE AQUI SEUS DADOS REAIS DO FIREBASE
+// FIREBASE
 const firebaseConfig = {
 
     apiKey: "SUA_API_KEY",
@@ -176,66 +178,63 @@ const db = getFirestore(app);
 
 // INICIAR AULA
 window.iniciarAula = async function(){
-    navigator.geolocation.getCurrentPosition((posicao)=>{
+
+    navigator.geolocation.getCurrentPosition(async (posicao)=>{
 
         const latitude = posicao.coords.latitude;
+
         const longitude = posicao.coords.longitude;
-        const mapa = L.map('mapa').setView([latitude, longitude], 18);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-    }).addTo(mapa);
+        // MAPA
+        const mapa = L.map('mapa').setView(
+            [latitude, longitude],
+            18
+        );
 
-    L.marker([latitude, longitude])
-    .addTo(mapa)
-    .bindPopup("Local da aula")
-    .openPopup();
+        L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom:19
+            }
+        ).addTo(mapa);
 
+        L.marker([latitude, longitude])
+        .addTo(mapa)
+        .bindPopup("Local da aula")
+        .openPopup();
+
+        // MATÉRIA
         const materia =
         document.getElementById("materia").value;
 
-        localStorage.setItem(
-            "latProfessor",
-            latitude
-        );
-
-        localStorage.setItem(
-            "longProfessor",
-            longitude
-        );
-
-        localStorage.setItem(
-            "materia",
-            materia
-        );
-
+        // GERAR CÓDIGO
         const codigo =
-            
         Math.random().toString(36).substring(2,7);
 
-            await setDoc(
+        // SALVAR FIREBASE
+        await setDoc(
             doc(db, "aulas", codigo),
-    {
-        materia: materia,
-        latitude: latitude,
-        longitude: longitude,
-        criadaEm: new Date().toLocaleString()
-    }
-);
-        
+            {
+                materia: materia,
+                latitude: latitude,
+                longitude: longitude,
+                criadaEm: new Date().toLocaleString()
+            }
+        );
 
+        // SALVAR LOCAL
         localStorage.setItem(
             "codigoAula",
             codigo
         );
 
+        // LINK ALUNO
         const linkAluno =
         "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
-        
+
         window.linkAluno = linkAluno;
 
-
-        // ÁREA DOS BOTÕES
+        // BOTÕES
         document.getElementById("areaLink").innerHTML = `
 
             <button onclick="abrirAluno()">
@@ -258,7 +257,10 @@ window.iniciarAula = async function(){
 // ABRIR ALUNO
 window.abrirAluno = function(){
 
-    window.open(window.linkAluno, "_blank");
+    window.open(
+        window.linkAluno,
+        "_blank"
+    );
 
 }
 
@@ -280,6 +282,7 @@ function carregarPresencas(){
 
     onSnapshot(
         collection(db,"presencas"),
+
         (snapshot)=>{
 
             const lista =
@@ -330,6 +333,7 @@ function carregarPresencas(){
             });
 
         }
+
     );
 
 }
