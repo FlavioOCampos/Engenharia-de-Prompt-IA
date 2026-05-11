@@ -1,115 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        const latAluno = posicao.coords.latitude;
 
-<title>Aluno</title>
+        const longAluno = posicao.coords.longitude;
 
-<link rel="stylesheet" href="style.css">
+        const precisao = posicao.coords.accuracy;
 
-</head>
+        if(precisao > 30){
 
-<body>
+            document.getElementById('resultado').innerHTML = `
+                ❌ GPS impreciso
+            `;
 
-<div class="container">
+            return;
 
-<h1>Confirmação de Presença</h1>
+        }
 
-<input type="text" id="nome" placeholder="Digite seu nome">
+        const distancia = calcularDistancia(
+            latProfessor,
+            longProfessor,
+            latAluno,
+            longAluno
+        );
 
-<button onclick="confirmarPresenca()">
-Confirmar presença
-</button>
+        if(distancia <= 50){
 
-<p id="resultado"></p>
+            await addDoc(collection(db, 'presencas'), {
 
-</div>
+                nome,
+                matricula,
+                turma,
+                distancia: Math.round(distancia),
+                data: new Date().toLocaleString(),
+                latitude: latAluno,
+                longitude: longAluno
 
-<script type="module">
+            });
 
-import {
-  db,
-  collection,
-  addDoc
-} from './firebase.js';
+            document.getElementById('resultado').innerHTML = `
 
-window.confirmarPresenca = function(){
+                <h2>✅ Presença confirmada</h2>
 
-navigator.geolocation.getCurrentPosition(async(posicao)=>{
+                <p>Distância: ${Math.round(distancia)} metros</p>
 
-const urlParams = new URLSearchParams(window.location.search);
+            `;
 
-const latProfessor =
-parseFloat(urlParams.get("lat"));
+        } else {
 
-const longProfessor =
-parseFloat(urlParams.get("long"));
+            document.getElementById('resultado').innerHTML = `
 
-const latAluno =
-posicao.coords.latitude;
+                <h2>❌ Você está longe da sala</h2>
 
-const longAluno =
-posicao.coords.longitude;
+                <p>Distância: ${Math.round(distancia)} metros</p>
 
-const distancia =
-calcularDistancia(
-latProfessor,
-longProfessor,
-latAluno,
-longAluno
-);
+            `;
 
-const nome =
-document.getElementById("nome").value;
+        }
 
-if(distancia <= 100){
-
-await addDoc(collection(db, "presencas"), {
-
-nome: nome,
-distancia: Math.round(distancia),
-data: new Date().toLocaleString()
-
-});
-
-document.getElementById("resultado").innerHTML = `
-✅ Presença confirmada!<br>
-Distância: ${Math.round(distancia)} metros
-`;
-
-}else{
-
-document.getElementById("resultado").innerHTML = `
-❌ Você está longe da sala.
-`;
-
-}
-
-});
-
-}
-
-function calcularDistancia(lat1, lon1, lat2, lon2){
-
-const R = 6371e3;
-
-const φ1 = lat1 * Math.PI/180;
-const φ2 = lat2 * Math.PI/180;
-
-const Δφ = (lat2-lat1) * Math.PI/180;
-const Δλ = (lon2-lon1) * Math.PI/180;
-
-const a =
-Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-Math.cos(φ1) * Math.cos(φ2) *
-Math.sin(Δλ/2) * Math.sin(Δλ/2);
-
-const c =
-2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-return R * c;
+    });
 
 }
 
