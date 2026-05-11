@@ -276,8 +276,12 @@ window.copiarLink = function(){
 function carregarPresencas(){
 
     onSnapshot(
-        collection(db,"presencas"),
-
+        collection(
+    db,
+    "aulas",
+    localStorage.getItem("codigoAula"),
+    "presencas"
+),
         (snapshot)=>{
 
             const lista =
