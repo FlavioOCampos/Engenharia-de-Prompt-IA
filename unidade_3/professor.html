@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 
 <meta charset="UTF-8">
@@ -18,75 +17,90 @@
 
 <h1>Painel do Professor</h1>
 
-<input
-type="text"
-id="nomeAula"
-placeholder="Digite o nome da aula"
->
+<input type="text" id="materia" placeholder="Digite a matéria">
 
 <button onclick="usarLocalizacao()">
 Usar minha localização
 </button>
 
-<div id="resultado"></div>
+<p id="status"></p>
+
+<div id="linkArea"></div>
+
+<h2>Alunos presentes</h2>
+
+<div id="listaAlunos"></div>
 
 </div>
 
-<script>
+<script type="module">
 
-function usarLocalizacao(){
+import {
+  db,
+  collection,
+  getDocs
+} from './firebase.js';
 
-navigator.geolocation.getCurrentPosition(
+window.usarLocalizacao = function(){
 
-(posicao)=>{
+navigator.geolocation.getCurrentPosition((posicao)=>{
 
-const latitude = posicao.coords.latitude;
-const longitude = posicao.coords.longitude;
+const lat = posicao.coords.latitude;
+const long = posicao.coords.longitude;
 
-const urlBase =
-window.location.origin +
-"/Engenharia-de-Prompt-IA/unidade_3/";
+document.getElementById("status").innerHTML = `
+Latitude: ${lat}<br>
+Longitude: ${long}
+`;
 
-const linkAluno =
-`${urlBase}aluno.html?lat=${latitude}&long=${longitude}`;
+const link =
+`aluno.html?lat=${lat}&long=${long}`;
 
-const linkMapa =
-`${urlBase}mapa.html?lat=${latitude}&long=${longitude}`;
-
-document.getElementById("resultado").innerHTML = `
-
-<p>Latitude: ${latitude}</p>
-
-<p>Longitude: ${longitude}</p>
-
-<br>
-
-<a href="${linkAluno}" target="_blank">
-🔗 Abrir Painel do Aluno
+document.getElementById("linkArea").innerHTML = `
+<a href="${link}" target="_blank">
+Abrir página do aluno
 </a>
 
 <br><br>
 
-<a href="${linkMapa}" target="_blank">
-🗺️ Abrir Mapa da Aula
+<a href="mapa.html?lat=${lat}&long=${long}" target="_blank">
+Abrir mapa da aula
 </a>
-
 `;
 
-},
-
-()=>{
-
-alert("Não foi possível obter localização.");
+});
 
 }
 
+async function carregarAlunos(){
+
+const querySnapshot = await getDocs(
+collection(db, "presencas")
 );
 
+let html = "";
+
+querySnapshot.forEach((doc)=>{
+
+const dados = doc.data();
+
+html += `
+<div class="aluno-card">
+<h3>${dados.nome}</h3>
+<p>${dados.distancia} metros</p>
+<p>${dados.data}</p>
+</div>
+`;
+
+});
+
+document.getElementById("listaAlunos").innerHTML = html;
+
 }
+
+carregarAlunos();
 
 </script>
 
 </body>
-
 </html>
