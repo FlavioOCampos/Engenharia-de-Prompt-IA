@@ -175,8 +175,7 @@ const db = getFirestore(app);
 
 
 // INICIAR AULA
-window.iniciarAula = function(){
-
+window.iniciarAula = async function(){
     navigator.geolocation.getCurrentPosition((posicao)=>{
 
         const latitude = posicao.coords.latitude;
