@@ -10,19 +10,12 @@ import {
 // CONFIG FIREBASE
 
 const firebaseConfig = {
-
-  apiKey: "SUA_API_KEY",
-
-  authDomain: "SEU_AUTH_DOMAIN",
-
-  projectId: "SEU_PROJECT_ID",
-
-  storageBucket: "SEU_STORAGE_BUCKET",
-
-  messagingSenderId: "SEU_SENDER_ID",
-
-  appId: "SEU_APP_ID"
-
+  apiKey: "AIzaSyCQXNXcAwQxrnrfp_LXyMZDYHQGFIgBhlY",
+  authDomain: "geopresenceai.firebaseapp.com",
+  projectId: "geopresenceai",
+  storageBucket: "geopresenceai.firebasestorage.app",
+  messagingSenderId: "50359090351",
+  appId: "1:50359090351:web:baee622c4487d20147685a"
 };
 
 
