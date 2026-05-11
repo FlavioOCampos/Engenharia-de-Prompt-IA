@@ -131,6 +131,8 @@
       word-break:break-all;
 
       margin-bottom:15px;
+
+      font-size:14px;
     }
 
     .presencas{
@@ -217,7 +219,8 @@
 
     async function iniciarAula(){
 
-      const materia = document.getElementById("materia").value;
+      const materia =
+      document.getElementById("materia").value;
 
       if(!materia){
 
@@ -230,13 +233,16 @@
 
         async(posicao)=>{
 
-          const codigo = gerarCodigo();
+          const codigo =
+          gerarCodigo();
 
           codigoAtual = codigo;
 
-          const latitude = posicao.coords.latitude;
+          const latitude =
+          posicao.coords.latitude;
 
-          const longitude = posicao.coords.longitude;
+          const longitude =
+          posicao.coords.longitude;
 
           await setDoc(
 
@@ -244,28 +250,36 @@
 
             {
 
-              materia,
-              latitude,
-              longitude,
+              materia:materia,
+
+              latitude:latitude,
+
+              longitude:longitude,
+
               criada:new Date().toLocaleString()
 
             }
 
           );
 
-          const linkAluno = "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
+          const linkAluno =
+          "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
 
-window.linkAluno = linkAluno;
+          document.getElementById("areaLink").innerHTML =
 
-document.getElementById("areaLink").innerHTML =
-'<div class="link">' +
-linkAluno +
-'</div>' +
-'<button onclick="abrirAluno()">' +
-'Abrir página do aluno' +
-'</button>';
+          '<div class="link">' +
 
-carregarPresencas();
+          linkAluno +
+
+          '</div>' +
+
+          '<button onclick="abrirAluno()">' +
+
+          'Abrir página do aluno' +
+
+          '</button>';
+
+          carregarPresencas();
 
         },
 
@@ -281,7 +295,13 @@ carregarPresencas();
 
     function abrirAluno(){
 
-      window.open(window.linkAluno, "_blank");
+      window.open(
+
+        "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigoAtual,
+
+        "_blank"
+
+      );
 
     }
 
@@ -293,12 +313,14 @@ carregarPresencas();
 
         (snapshot)=>{
 
-          const lista = document.getElementById("listaPresencas");
+          const lista =
+          document.getElementById("listaPresencas");
 
           lista.innerHTML = "";
 
           document.getElementById("contador").innerHTML =
-          `${snapshot.size} alunos`;
+
+          snapshot.size + " alunos";
 
           snapshot.forEach((doc)=>{
 
@@ -333,7 +355,9 @@ carregarPresencas();
     function gerarCodigo(){
 
       return Math.random()
+
       .toString(36)
+
       .substring(2,10);
 
     }
