@@ -1,44 +1,80 @@
-function pegarLocalizacao(){
+function calcularDistancia(lat1, lon1, lat2, lon2){
 
-navigator.geolocation.getCurrentPosition(
-    
-    (posicao)=>{
+const R = 6371e3;
 
-        const latitude = posicao.coords.latitude;
-        const longitude = posicao.coords.longitude;
+const f1 = lat1 * Math.PI / 180;
+const f2 = lat2 * Math.PI / 180;
 
-        document.getElementById("status").innerHTML = `
-        
-        Latitude: ${latitude}
-        <br>
-        Longitude: ${longitude}
-        
-        `;
+const df = (lat2 - lat1) * Math.PI / 180;
+const dl = (lon2 - lon1) * Math.PI / 180;
 
-        gerarLink(latitude, longitude);
+const a =
 
-    },
+Math.sin(df / 2) * Math.sin(df / 2)
 
-    ()=>{
++
 
-        alert("Não foi possível pegar localização");
+Math.cos(f1)
 
-    }
+*
 
-);
+Math.cos(f2)
+
+*
+
+Math.sin(dl / 2)
+
+*
+
+Math.sin(dl / 2);
+
+const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+return R * c;
 
 }
 
-function gerarLink(lat, long){
+function confirmarPresenca(){
 
-const link = `
-aluno.html?lat=${lat}&long=${long}
-`;
+const params = new URLSearchParams(window.location.search);
 
-document.getElementById("linkGerado").innerHTML = `
-<a href="${link}">
-${link}
-</a>
-`;
+const latProfessor = params.get("lat");
+
+const longProfessor = params.get("long");
+
+navigator.geolocation.getCurrentPosition((posicao)=>{
+
+const latAluno = posicao.coords.latitude;
+
+const longAluno = posicao.coords.longitude;
+
+const distancia = calcularDistancia(
+
+latProfessor,
+longProfessor,
+latAluno,
+longAluno
+
+);
+
+const resultado = document.getElementById("resultado");
+
+if(distancia <= 50){
+
+resultado.innerHTML =
+
+`✅ Presença confirmada!<br>
+Distância: ${Math.round(distancia)} metros`;
+
+}else{
+
+resultado.innerHTML =
+
+`❌ Você está longe da sala.<br>
+Distância: ${Math.round(distancia)} metros`;
+
+}
+
+});
 
 }
