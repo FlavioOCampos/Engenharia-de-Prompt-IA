@@ -76,7 +76,8 @@ Math.sin(dl / 2)
 
 Math.sin(dl / 2);
 
-const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+const c =
+2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 return R * c;
 
@@ -84,19 +85,25 @@ return R * c;
 
 function confirmarPresenca(){
 
-const params = new URLSearchParams(window.location.search);
+const params =
+new URLSearchParams(window.location.search);
 
-const latProfessor = params.get("lat");
+const latProfessor =
+params.get("lat");
 
-const longProfessor = params.get("long");
+const longProfessor =
+params.get("long");
 
 navigator.geolocation.getCurrentPosition((posicao)=>{
 
-const latAluno = posicao.coords.latitude;
+const latAluno =
+posicao.coords.latitude;
 
-const longAluno = posicao.coords.longitude;
+const longAluno =
+posicao.coords.longitude;
 
-const distancia = calcularDistancia(
+const distancia =
+calcularDistancia(
 
 latProfessor,
 longProfessor,
