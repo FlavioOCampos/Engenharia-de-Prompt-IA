@@ -20,15 +20,17 @@ const linkMapa =
 
 resultado.innerHTML = `
 
-<p>Latitude: ${lat}</p>
+<br>
 
-<p>Longitude: ${long}</p>
+<p><strong>Latitude:</strong> ${lat}</p>
+
+<p><strong>Longitude:</strong> ${long}</p>
 
 <br>
 
 <a href="${linkAluno}" target="_blank">
 
-Abrir Painel do Aluno
+🔗 Abrir Painel do Aluno
 
 </a>
 
@@ -36,7 +38,7 @@ Abrir Painel do Aluno
 
 <a href="${linkMapa}" target="_blank">
 
-Abrir Mapa
+🗺️ Abrir Mapa da Aula
 
 </a>
 
@@ -119,14 +121,14 @@ if(distancia <= 50){
 
 resultado.innerHTML =
 
-`✅ Presença confirmada!<br>
+`✅ Presença confirmada!<br><br>
 Distância: ${Math.round(distancia)} metros`;
 
 }else{
 
 resultado.innerHTML =
 
-`❌ Você está longe da sala.<br>
+`❌ Você está longe da sala.<br><br>
 Distância: ${Math.round(distancia)} metros`;
 
 }
