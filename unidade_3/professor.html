@@ -144,6 +144,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 
 import {
     getFirestore,
+    doc,
+    setDoc,
     collection,
     addDoc,
     onSnapshot
@@ -209,7 +211,19 @@ window.iniciarAula = function(){
         );
 
         const codigo =
+            
         Math.random().toString(36).substring(2,7);
+
+            await setDoc(
+            doc(db, "aulas", codigo),
+    {
+        materia: materia,
+        latitude: latitude,
+        longitude: longitude,
+        criadaEm: new Date().toLocaleString()
+    }
+);
+        
 
         localStorage.setItem(
             "codigoAula",
