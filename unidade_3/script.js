@@ -1,3 +1,51 @@
+function usarLocalizacao(){
+
+navigator.geolocation.getCurrentPosition((posicao)=>{
+
+const lat = posicao.coords.latitude;
+
+const long = posicao.coords.longitude;
+
+const resultado =
+document.getElementById("resultado");
+
+const base =
+"https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/";
+
+const linkAluno =
+`${base}aluno.html?lat=${lat}&long=${long}`;
+
+const linkMapa =
+`${base}mapa.html?lat=${lat}&long=${long}`;
+
+resultado.innerHTML = `
+
+<p>Latitude: ${lat}</p>
+
+<p>Longitude: ${long}</p>
+
+<br>
+
+<a href="${linkAluno}" target="_blank">
+
+Abrir Painel do Aluno
+
+</a>
+
+<br><br>
+
+<a href="${linkMapa}" target="_blank">
+
+Abrir Mapa
+
+</a>
+
+`;
+
+});
+
+}
+
 function calcularDistancia(lat1, lon1, lat2, lon2){
 
 const R = 6371e3;
@@ -57,7 +105,8 @@ longAluno
 
 );
 
-const resultado = document.getElementById("resultado");
+const resultado =
+document.getElementById("resultado");
 
 if(distancia <= 50){
 
