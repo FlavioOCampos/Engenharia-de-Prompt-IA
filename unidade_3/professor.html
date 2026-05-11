@@ -253,28 +253,19 @@
 
           );
 
-          const linkAluno =
-          `https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=${codigo}`;
+          const linkAluno = "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
 
-          document.getElementById("areaLink").innerHTML = `
+window.linkAluno = linkAluno;
 
-            <div class="link">
+document.getElementById("areaLink").innerHTML =
+'<div class="link">' +
+linkAluno +
+'</div>' +
+'<button onclick="abrirAluno()">' +
+'Abrir página do aluno' +
+'</button>';
 
-              ${linkAluno}
-
-            </div>
-
-            <button onclick="abrirAluno()">
-
-              Abrir página do aluno
-
-            </button>
-
-          `;
-
-          window.linkAluno = linkAluno;
-
-          carregarPresencas();
+carregarPresencas();
 
         },
 
