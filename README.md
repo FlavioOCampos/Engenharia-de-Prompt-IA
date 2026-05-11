@@ -78,4 +78,4 @@ Este portfólio representa o processo de aprendizagem construído ao longo da di
 
 📎 Referências
 
-Materiais didáticos, aulas, atividades práticas e ferramentas digitais utilizadas durante a disciplina. 
+Materiais didáticos, aulas, atividades práticas e ferramentas digitais utilizadas durante a disciplina.       
