@@ -4,9 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Painel do Professor</title>
 
@@ -20,26 +18,75 @@ content="width=device-width, initial-scale=1.0">
 
 <h1>Painel do Professor</h1>
 
-<p>
-
-Clique abaixo para iniciar a aula
-e gerar o link de presença.
-
-</p>
-
-<br>
+<input
+type="text"
+id="nomeAula"
+placeholder="Digite o nome da aula"
+>
 
 <button onclick="usarLocalizacao()">
-
 Usar minha localização
-
 </button>
 
 <div id="resultado"></div>
 
 </div>
 
-<script src="script.js"></script>
+<script>
+
+function usarLocalizacao(){
+
+navigator.geolocation.getCurrentPosition(
+
+(posicao)=>{
+
+const latitude = posicao.coords.latitude;
+const longitude = posicao.coords.longitude;
+
+const urlBase =
+window.location.origin +
+"/Engenharia-de-Prompt-IA/unidade_3/";
+
+const linkAluno =
+`${urlBase}aluno.html?lat=${latitude}&long=${longitude}`;
+
+const linkMapa =
+`${urlBase}mapa.html?lat=${latitude}&long=${longitude}`;
+
+document.getElementById("resultado").innerHTML = `
+
+<p>Latitude: ${latitude}</p>
+
+<p>Longitude: ${longitude}</p>
+
+<br>
+
+<a href="${linkAluno}" target="_blank">
+🔗 Abrir Painel do Aluno
+</a>
+
+<br><br>
+
+<a href="${linkMapa}" target="_blank">
+🗺️ Abrir Mapa da Aula
+</a>
+
+`;
+
+},
+
+()=>{
+
+alert("Não foi possível obter localização.");
+
+}
+
+);
+
+}
+
+</script>
 
 </body>
+
 </html>
