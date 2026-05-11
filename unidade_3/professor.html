@@ -210,15 +210,7 @@ window.iniciarAula = async function(){
         Math.random().toString(36).substring(2,7);
 
         // SALVAR AULA
-        await setDoc(
-            doc(db, "aulas", codigo),
-            {
-                materia: materia,
-                latitude: latitude,
-                longitude: longitude,
-                criadaEm: new Date().toLocaleString()
-            }
-        );
+       localStorage.setItem("codigoAula", codigo);
 
         // LINK ALUNO
         const linkAluno =
