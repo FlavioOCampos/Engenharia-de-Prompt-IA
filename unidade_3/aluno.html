@@ -1,67 +1,244 @@
 <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        const latAluno = posicao.coords.latitude;
+  <title>Painel do Aluno</title>
 
-        const longAluno = posicao.coords.longitude;
+  <link rel="stylesheet" href="style.css">
 
-        const precisao = posicao.coords.accuracy;
+  <style>
+    body{
+      margin:0;
+      background:#000;
+      font-family:Arial, Helvetica, sans-serif;
+      color:white;
 
-        if(precisao > 30){
+      display:flex;
+      justify-content:center;
+      align-items:center;
 
-            document.getElementById('resultado').innerHTML = `
-                ❌ GPS impreciso
-            `;
+      min-height:100vh;
+    }
 
-            return;
+    .card{
+      width:400px;
+      background:#1e1e1e;
+      border-radius:20px;
+      padding:30px;
+      box-sizing:border-box;
+    }
 
-        }
+    h1{
+      margin-top:0;
+      font-size:42px;
+      margin-bottom:30px;
+    }
 
-        const distancia = calcularDistancia(
+    input{
+      width:100%;
+      padding:15px;
+      margin-bottom:15px;
+
+      border:none;
+      border-radius:10px;
+
+      background:#2c2c2c;
+      color:white;
+
+      box-sizing:border-box;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      padding:15px;
+
+      border:none;
+      border-radius:10px;
+
+      background:#28c7ae;
+      color:white;
+
+      font-size:18px;
+      font-weight:bold;
+
+      cursor:pointer;
+
+      transition:0.2s;
+    }
+
+    button:hover{
+      opacity:0.9;
+    }
+
+    #resultado{
+      margin-top:25px;
+      font-size:18px;
+      line-height:1.5;
+    }
+
+    .sucesso{
+      color:#57ff8a;
+    }
+
+    .erro{
+      color:#ff6b6b;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <h1>Aluno</h1>
+
+    <input
+      type="text"
+      id="nome"
+      placeholder="Digite seu nome"
+    >
+
+    <input
+      type="text"
+      id="matricula"
+      placeholder="Digite sua matrícula"
+    >
+
+    <input
+      type="text"
+      id="turma"
+      placeholder="Digite sua turma"
+    >
+
+    <button onclick="confirmarPresenca()">
+      Confirmar presença
+    </button>
+
+    <div id="resultado"></div>
+
+  </div>
+
+  <script type="module">
+
+    import { db } from "./firebase.js";
+
+    import {
+      collection,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+
+    const latProfessor = parseFloat(params.get("lat"));
+    const longProfessor = parseFloat(params.get("long"));
+
+    function calcularDistancia(lat1, lon1, lat2, lon2){
+
+      const R = 6371e3;
+
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+
+      const a =
+        Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ/2) * Math.sin(Δλ/2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      return R * c;
+    }
+
+    async function confirmarPresenca(){
+
+      const nome = document.getElementById("nome").value;
+      const matricula = document.getElementById("matricula").value;
+      const turma = document.getElementById("turma").value;
+
+      if(!nome || !matricula || !turma){
+
+        document.getElementById("resultado").innerHTML = `
+          <div class="erro">
+            ❌ Preencha todos os campos
+          </div>
+        `;
+
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+
+        async(posicao)=>{
+
+          const latAluno = posicao.coords.latitude;
+          const longAluno = posicao.coords.longitude;
+
+          const distancia = calcularDistancia(
             latProfessor,
             longProfessor,
             latAluno,
             longAluno
-        );
+          );
 
-        if(distancia <= 50){
+          if(distancia <= 50){
 
-            await addDoc(collection(db, 'presencas'), {
+            await addDoc(collection(db, "presencas"), {
 
-                nome,
-                matricula,
-                turma,
-                distancia: Math.round(distancia),
-                data: new Date().toLocaleString(),
-                latitude: latAluno,
-                longitude: longAluno
+              nome: nome,
+              matricula: matricula,
+              turma: turma,
 
+              distancia: Math.round(distancia),
+
+              data: new Date().toLocaleString(),
+
+              latitude: latAluno,
+              longitude: longAluno
             });
 
-            document.getElementById('resultado').innerHTML = `
-
-                <h2>✅ Presença confirmada</h2>
-
-                <p>Distância: ${Math.round(distancia)} metros</p>
-
+            document.getElementById("resultado").innerHTML = `
+              <div class="sucesso">
+                ✅ Presença confirmada
+                <br><br>
+                Distância: ${Math.round(distancia)} metros
+              </div>
             `;
 
-        } else {
+          }else{
 
-            document.getElementById('resultado').innerHTML = `
-
-                <h2>❌ Você está longe da sala</h2>
-
-                <p>Distância: ${Math.round(distancia)} metros</p>
-
+            document.getElementById("resultado").innerHTML = `
+              <div class="erro">
+                ❌ Você está longe da sala
+                <br><br>
+                Distância: ${Math.round(distancia)} metros
+              </div>
             `;
+          }
 
+        },
+
+        ()=>{
+
+          document.getElementById("resultado").innerHTML = `
+            <div class="erro">
+              ❌ Permita acesso à localização
+            </div>
+          `;
         }
 
-    });
+      );
 
-}
+    }
 
-</script>
+    window.confirmarPresenca = confirmarPresenca;
+
+  </script>
 
 </body>
 </html>
