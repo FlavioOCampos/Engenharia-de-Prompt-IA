@@ -229,6 +229,36 @@ await setDoc(
 
         window.linkAluno = linkAluno;
 
+        document.getElementById("areaLink").innerHTML = `
+
+    <div style="
+        background:#2b2b2b;
+        padding:15px;
+        border-radius:12px;
+        margin-top:15px;
+        margin-bottom:10px;
+    ">
+
+        <p style="margin-bottom:8px;">
+            Código da aula:
+        </p>
+
+        <h2 style="color:#31c7b7;">
+            ${codigo}
+        </h2>
+
+    </div>
+
+    <button onclick="abrirAluno()">
+        Abrir página do aluno
+    </button>
+
+    <button onclick="copiarLink()">
+        Copiar link
+    </button>
+
+`;
+
         // BOTÕES
         document.getElementById("areaLink").innerHTML = `
 
