@@ -35,7 +35,7 @@
 
     .container{
 
-      width:500px;
+      width:430px;
 
       background:#1e1e1e;
 
@@ -44,11 +44,32 @@
       border-radius:20px;
     }
 
-    h1{
+    .topo{
 
-      font-size:46px;
+      display:flex;
+
+      justify-content:space-between;
+
+      align-items:center;
 
       margin-bottom:25px;
+    }
+
+    h1{
+      font-size:48px;
+    }
+
+    .contador{
+
+      background:#27c7ae;
+
+      color:black;
+
+      padding:10px 15px;
+
+      border-radius:10px;
+
+      font-weight:bold;
     }
 
     input{
@@ -56,8 +77,6 @@
       width:100%;
 
       padding:15px;
-
-      margin-bottom:15px;
 
       border:none;
 
@@ -67,6 +86,8 @@
 
       color:white;
 
+      margin-bottom:15px;
+
       font-size:16px;
     }
 
@@ -75,8 +96,6 @@
       width:100%;
 
       padding:15px;
-
-      margin-bottom:15px;
 
       border:none;
 
@@ -91,91 +110,52 @@
       font-weight:bold;
 
       cursor:pointer;
+
+      margin-bottom:15px;
     }
 
     button:hover{
       opacity:0.9;
     }
 
-    .info{
+    .link{
 
-      margin-top:20px;
-
-      line-height:1.8;
-    }
-
-    .codigo{
+      margin-top:10px;
 
       background:#111;
 
-      padding:15px;
+      padding:12px;
 
-      border-radius:12px;
-
-      margin-top:20px;
-
-      text-align:center;
-
-      font-size:26px;
-
-      font-weight:bold;
-
-      letter-spacing:3px;
-
-      color:#27c7ae;
-    }
-
-    .link{
-
-      margin-top:15px;
+      border-radius:10px;
 
       word-break:break-all;
+
+      margin-bottom:15px;
     }
 
-    .link a{
-
-      color:#27c7ae;
-
-      text-decoration:none;
+    .presencas{
+      margin-top:20px;
     }
 
     .card{
 
-      background:#2b2b2b;
+      background:#2a2a2a;
 
       padding:18px;
 
+      border-radius:15px;
+
+      margin-bottom:15px;
+
       border-left:5px solid #27c7ae;
-
-      border-radius:12px;
-
-      margin-top:15px;
-
-      line-height:1.7;
     }
 
-    .topo{
-
-      display:flex;
-
-      justify-content:space-between;
-
-      align-items:center;
-
-      margin-bottom:20px;
+    .card h3{
+      margin-bottom:10px;
     }
 
-    .contador{
-
-      background:#27c7ae;
-
-      color:black;
-
-      padding:8px 14px;
-
-      border-radius:10px;
-
-      font-weight:bold;
+    .card p{
+      margin-bottom:5px;
     }
 
   </style>
@@ -206,17 +186,17 @@
       Iniciar aula
     </button>
 
-    <div class="info" id="info"></div>
+    <div id="areaLink"></div>
 
-    <div class="codigo" id="codigoAula"></div>
+    <div class="presencas">
 
-    <div class="link" id="linkAluno"></div>
+      <h2>Presenças</h2>
 
-    <h2 style="margin-top:35px;">
-      Presenças
-    </h2>
+      <br>
 
-    <div id="lista"></div>
+      <div id="listaPresencas"></div>
+
+    </div>
 
   </div>
 
@@ -229,24 +209,11 @@
       doc,
       setDoc,
       collection,
-      addDoc,
       onSnapshot
 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     let codigoAtual = "";
-
-    let latitudeProfessor = 0;
-
-    let longitudeProfessor = 0;
-
-    function gerarCodigo(){
-
-      return Math.random()
-        .toString(36)
-        .substring(2,8)
-        .toUpperCase();
-    }
 
     async function iniciarAula(){
 
@@ -263,60 +230,71 @@
 
         async(posicao)=>{
 
-          latitudeProfessor = posicao.coords.latitude;
+          const codigo = gerarCodigo();
 
-          longitudeProfessor = posicao.coords.longitude;
+          codigoAtual = codigo;
 
-          codigoAtual = gerarCodigo();
+          const latitude = posicao.coords.latitude;
 
-          await setDoc(doc(db, "aulas", codigoAtual), {
+          const longitude = posicao.coords.longitude;
 
-            materia:materia,
+          await setDoc(
 
-            latitude:latitudeProfessor,
+            doc(db, "aulas", codigo),
 
-            longitude:longitudeProfessor,
+            {
 
-            criada:new Date().toLocaleString()
-          });
+              materia,
+              latitude,
+              longitude,
+              criada:new Date().toLocaleString()
 
-          document.getElementById("info").innerHTML = `
-            Matéria: ${materia}
-            <br>
-            Latitude: ${latitudeProfessor}
-            <br>
-            Longitude: ${longitudeProfessor}
-          `;
+            }
 
-          document.getElementById("codigoAula").innerHTML = `
-            ${codigoAtual}
-          `;
+          );
 
-          const link = `
-            ${window.location.origin}
-            /Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=${codigoAtual}
-          `;
+          const linkAluno =
+          `https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=${codigo}`;
 
-          document.getElementById("linkAluno").innerHTML = `
-            <a href="${link}" target="_blank">
+          document.getElementById("areaLink").innerHTML = `
+
+            <div class="link">
+
+              ${linkAluno}
+
+            </div>
+
+            <button onclick="abrirAluno()">
+
               Abrir página do aluno
-            </a>
+
+            </button>
+
           `;
 
-          ouvirPresencas();
+          window.linkAluno = linkAluno;
+
+          carregarPresencas();
 
         },
 
         ()=>{
 
-          alert("Permita acesso à localização");
+          alert("Permita localização");
+
         }
 
       );
 
     }
 
-    function ouvirPresencas(){
+    function abrirAluno(){
+
+      window.open(window.linkAluno, "_blank");
+
+    }
+
+    function carregarPresencas(){
 
       onSnapshot(
 
@@ -324,13 +302,12 @@
 
         (snapshot)=>{
 
-          const lista = document.getElementById("lista");
+          const lista = document.getElementById("listaPresencas");
 
           lista.innerHTML = "";
 
-          document.getElementById("contador").innerHTML = `
-            ${snapshot.size} alunos
-          `;
+          document.getElementById("contador").innerHTML =
+          `${snapshot.size} alunos`;
 
           snapshot.forEach((doc)=>{
 
@@ -340,32 +317,20 @@
 
               <div class="card">
 
-                <strong>
-                  ${dados.nome}
-                </strong>
+                <h3>${dados.nome}</h3>
 
-                <br>
+                <p>Matrícula: ${dados.matricula}</p>
 
-                Matrícula:
-                ${dados.matricula}
+                <p>Turma: ${dados.turma}</p>
 
-                <br>
+                <p>Distância: ${dados.distancia} metros</p>
 
-                Turma:
-                ${dados.turma}
-
-                <br>
-
-                Distância:
-                ${dados.distancia} metros
-
-                <br>
-
-                ${dados.data}
+                <p>${dados.data}</p>
 
               </div>
 
             `;
+
           });
 
         }
@@ -374,7 +339,17 @@
 
     }
 
+    function gerarCodigo(){
+
+      return Math.random()
+      .toString(36)
+      .substring(2,10);
+
+    }
+
     window.iniciarAula = iniciarAula;
+
+    window.abrirAluno = abrirAluno;
 
   </script>
 
