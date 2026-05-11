@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Professor</title>
+<title>Painel Professor</title>
 
 <style>
 
@@ -25,9 +25,9 @@ body{
 }
 
 .card{
-    width:420px;
+    width:430px;
     background:#1e1e1e;
-    padding:24px;
+    padding:25px;
     border-radius:20px;
 }
 
@@ -41,9 +41,9 @@ body{
 .badge{
     background:#31c7b7;
     color:black;
+    font-weight:bold;
     padding:8px 14px;
     border-radius:10px;
-    font-weight:bold;
 }
 
 input{
@@ -74,10 +74,10 @@ button{
 
 .presenca{
     background:#2b2b2b;
-    padding:15px;
-    border-radius:14px;
-    margin-top:15px;
     border-left:4px solid #31c7b7;
+    border-radius:14px;
+    padding:15px;
+    margin-top:15px;
 }
 
 .presenca h3{
@@ -101,6 +101,7 @@ h2{
 
     <div class="topo">
         <h1>Professor</h1>
+
         <div class="badge" id="contador">
             0 alunos
         </div>
@@ -135,17 +136,19 @@ import {
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+// COLE AQUI SEUS DADOS REAIS DO FIREBASE
 const firebaseConfig = {
 
-    apiKey: "SUA_API",
+    apiKey: "SUA_API_KEY",
 
-    authDomain: "SEU_AUTH",
+    authDomain: "SEU_AUTH_DOMAIN",
 
-    projectId: "SEU_PROJECT",
+    projectId: "SEU_PROJECT_ID",
 
-    storageBucket: "SEU_BUCKET",
+    storageBucket: "SEU_STORAGE_BUCKET",
 
-    messagingSenderId: "SEU_SENDER",
+    messagingSenderId: "SEU_SENDER_ID",
 
     appId: "SEU_APP_ID"
 
@@ -155,9 +158,11 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+
+// INICIAR AULA
 window.iniciarAula = function(){
 
-    navigator.geolocation.getCurrentPosition(async(posicao)=>{
+    navigator.geolocation.getCurrentPosition((posicao)=>{
 
         const latitude = posicao.coords.latitude;
         const longitude = posicao.coords.longitude;
@@ -165,20 +170,36 @@ window.iniciarAula = function(){
         const materia =
         document.getElementById("materia").value;
 
+        localStorage.setItem(
+            "latProfessor",
+            latitude
+        );
+
+        localStorage.setItem(
+            "longProfessor",
+            longitude
+        );
+
+        localStorage.setItem(
+            "materia",
+            materia
+        );
+
         const codigo =
         Math.random().toString(36).substring(2,7);
 
-        localStorage.setItem("codigoAula", codigo);
-
-        localStorage.setItem("latProfessor", latitude);
-
-        localStorage.setItem("longProfessor", longitude);
+        localStorage.setItem(
+            "codigoAula",
+            codigo
+        );
 
         const linkAluno =
         "https://flaviocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
 
         window.linkAluno = linkAluno;
 
+
+        // ÁREA DOS BOTÕES
         document.getElementById("areaLink").innerHTML = `
 
             <button onclick="abrirAluno()">
@@ -197,69 +218,83 @@ window.iniciarAula = function(){
 
 }
 
+
+// ABRIR ALUNO
 window.abrirAluno = function(){
 
     window.open(window.linkAluno, "_blank");
 
 }
 
+
+// COPIAR LINK
 window.copiarLink = function(){
 
-    navigator.clipboard.writeText(window.linkAluno);
+    navigator.clipboard.writeText(
+        window.linkAluno
+    );
 
     alert("Link copiado!");
 
 }
 
+
+// CARREGAR PRESENÇAS
 function carregarPresencas(){
 
-    onSnapshot(collection(db,"presencas"),(snapshot)=>{
+    onSnapshot(
+        collection(db,"presencas"),
+        (snapshot)=>{
 
-        const lista =
-        document.getElementById("lista");
+            const lista =
+            document.getElementById("lista");
 
-        lista.innerHTML = "";
+            lista.innerHTML = "";
 
-        document.getElementById("contador")
-        .innerHTML =
-        snapshot.size + " alunos";
+            document.getElementById(
+                "contador"
+            ).innerHTML =
+            snapshot.size + " alunos";
 
-        snapshot.forEach((doc)=>{
+            snapshot.forEach((doc)=>{
 
-            const dados = doc.data();
+                const dados = doc.data();
 
-            lista.innerHTML += `
+                lista.innerHTML += `
 
-            <div class="presenca">
+                <div class="presenca">
 
-                <h3>${dados.nome}</h3>
+                    <h3>
+                        ${dados.nome}
+                    </h3>
 
-                <p>
-                    Matrícula:
-                    ${dados.matricula}
-                </p>
+                    <p>
+                        Matrícula:
+                        ${dados.matricula}
+                    </p>
 
-                <p>
-                    Turma:
-                    ${dados.turma}
-                </p>
+                    <p>
+                        Turma:
+                        ${dados.turma}
+                    </p>
 
-                <p>
-                    Distância:
-                    ${dados.distancia} metros
-                </p>
+                    <p>
+                        Distância:
+                        ${dados.distancia} metros
+                    </p>
 
-                <p>
-                    ${dados.data}
-                </p>
+                    <p>
+                        ${dados.data}
+                    </p>
 
-            </div>
+                </div>
 
-            `;
+                `;
 
-        });
+            });
 
-    });
+        }
+    );
 
 }
 
