@@ -1,373 +1,269 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Painel Professor</title>
-
-  <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial, Helvetica, sans-serif;
-    }
-
-    body{
-
-      background:#000;
-
-      min-height:100vh;
-
-      display:flex;
-
-      justify-content:center;
-
-      align-items:center;
-
-      color:white;
-    }
-
-    .container{
-
-      width:430px;
-
-      background:#1e1e1e;
-
-      padding:35px;
-
-      border-radius:20px;
-    }
-
-    .topo{
-
-      display:flex;
-
-      justify-content:space-between;
-
-      align-items:center;
-
-      margin-bottom:25px;
-    }
-
-    h1{
-      font-size:48px;
-    }
-
-    .contador{
-
-      background:#27c7ae;
-
-      color:black;
-
-      padding:10px 15px;
-
-      border-radius:10px;
-
-      font-weight:bold;
-    }
-
-    input{
-
-      width:100%;
-
-      padding:15px;
-
-      border:none;
-
-      border-radius:10px;
-
-      background:#2b2b2b;
-
-      color:white;
-
-      margin-bottom:15px;
-
-      font-size:16px;
-    }
-
-    button{
-
-      width:100%;
-
-      padding:15px;
-
-      border:none;
-
-      border-radius:10px;
-
-      background:#27c7ae;
-
-      color:white;
-
-      font-size:18px;
-
-      font-weight:bold;
-
-      cursor:pointer;
-
-      margin-bottom:15px;
-    }
-
-    button:hover{
-      opacity:0.9;
-    }
-
-    .link{
-
-      margin-top:10px;
-
-      background:#111;
-
-      padding:12px;
-
-      border-radius:10px;
-
-      word-break:break-all;
-
-      margin-bottom:15px;
-
-      font-size:14px;
-    }
-
-    .presencas{
-      margin-top:20px;
-    }
-
-    .card{
-
-      background:#2a2a2a;
-
-      padding:18px;
-
-      border-radius:15px;
-
-      margin-bottom:15px;
-
-      border-left:5px solid #27c7ae;
-    }
-
-    .card h3{
-      margin-bottom:10px;
-    }
-
-    .card p{
-      margin-bottom:5px;
-    }
-
-  </style>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Professor</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:#000;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.card{
+    width:420px;
+    background:#1e1e1e;
+    padding:24px;
+    border-radius:20px;
+}
+
+.topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.badge{
+    background:#31c7b7;
+    color:black;
+    padding:8px 14px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#2b2b2b;
+    color:white;
+    margin-bottom:14px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#31c7b7;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+#areaLink{
+    margin-top:15px;
+}
+
+.presenca{
+    background:#2b2b2b;
+    padding:15px;
+    border-radius:14px;
+    margin-top:15px;
+    border-left:4px solid #31c7b7;
+}
+
+.presenca h3{
+    margin-bottom:10px;
+}
+
+.presenca p{
+    margin-bottom:5px;
+}
+
+h2{
+    margin-top:20px;
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="card">
 
     <div class="topo">
-
-      <h1>Professor</h1>
-
-      <div class="contador" id="contador">
-        0 alunos
-      </div>
-
+        <h1>Professor</h1>
+        <div class="badge" id="contador">
+            0 alunos
+        </div>
     </div>
 
     <input
-      type="text"
-      id="materia"
-      placeholder="Digite a matéria"
+        type="text"
+        id="materia"
+        placeholder="Digite a matéria"
     >
 
     <button onclick="iniciarAula()">
-      Iniciar aula
+        Iniciar aula
     </button>
 
     <div id="areaLink"></div>
 
-    <div class="presencas">
+    <h2>Presenças</h2>
 
-      <h2>Presenças</h2>
+    <div id="lista"></div>
 
-      <br>
+</div>
 
-      <div id="listaPresencas"></div>
+<script type="module">
 
-    </div>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  </div>
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  <script type="module">
+const firebaseConfig = {
 
-    import { db } from "./firebase.js";
+    apiKey: "SUA_API",
 
-    import {
+    authDomain: "SEU_AUTH",
 
-      doc,
-      setDoc,
-      collection,
-      onSnapshot
+    projectId: "SEU_PROJECT",
 
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    storageBucket: "SEU_BUCKET",
 
-    let codigoAtual = "";
+    messagingSenderId: "SEU_SENDER",
 
-    async function iniciarAula(){
+    appId: "SEU_APP_ID"
 
-      const materia =
-      document.getElementById("materia").value;
+};
 
-      if(!materia){
+const app = initializeApp(firebaseConfig);
 
-        alert("Digite a matéria");
+const db = getFirestore(app);
 
-        return;
-      }
+window.iniciarAula = function(){
 
-      navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(async(posicao)=>{
 
-        async(posicao)=>{
+        const latitude = posicao.coords.latitude;
+        const longitude = posicao.coords.longitude;
 
-          const codigo =
-          gerarCodigo();
+        const materia =
+        document.getElementById("materia").value;
 
-          codigoAtual = codigo;
+        const codigo =
+        Math.random().toString(36).substring(2,7);
 
-          const latitude =
-          posicao.coords.latitude;
+        localStorage.setItem("codigoAula", codigo);
 
-          const longitude =
-          posicao.coords.longitude;
+        localStorage.setItem("latProfessor", latitude);
 
-          await setDoc(
+        localStorage.setItem("longProfessor", longitude);
 
-            doc(db, "aulas", codigo),
+        const linkAluno =
+        "https://flaviocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
 
-            {
+        window.linkAluno = linkAluno;
 
-              materia:materia,
+        document.getElementById("areaLink").innerHTML = `
 
-              latitude:latitude,
+            <button onclick="abrirAluno()">
+                Abrir página do aluno
+            </button>
 
-              longitude:longitude,
+            <button onclick="copiarLink()">
+                Copiar link
+            </button>
 
-              criada:new Date().toLocaleString()
+        `;
 
-            }
+        carregarPresencas();
 
-          );
+    });
 
-          const linkAluno =
-          "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
+}
 
-          document.getElementById("areaLink").innerHTML =
+window.abrirAluno = function(){
 
-          '<div class="link">' +
+    window.open(window.linkAluno, "_blank");
 
-          linkAluno +
+}
 
-          '</div>' +
+window.copiarLink = function(){
 
-          '<button onclick="abrirAluno()">' +
+    navigator.clipboard.writeText(window.linkAluno);
 
-          'Abrir página do aluno' +
+    alert("Link copiado!");
 
-          '</button>';
+}
 
-          carregarPresencas();
+function carregarPresencas(){
 
-        },
+    onSnapshot(collection(db,"presencas"),(snapshot)=>{
 
-        ()=>{
+        const lista =
+        document.getElementById("lista");
 
-          alert("Permita localização");
+        lista.innerHTML = "";
 
-        }
+        document.getElementById("contador")
+        .innerHTML =
+        snapshot.size + " alunos";
 
-      );
-
-    }
-
-    function abrirAluno(){
-
-      window.open(
-
-        "https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigoAtual,
-
-        "_blank"
-
-      );
-
-    }
-
-    function carregarPresencas(){
-
-      onSnapshot(
-
-        collection(db, "aulas", codigoAtual, "presencas"),
-
-        (snapshot)=>{
-
-          const lista =
-          document.getElementById("listaPresencas");
-
-          lista.innerHTML = "";
-
-          document.getElementById("contador").innerHTML =
-
-          snapshot.size + " alunos";
-
-          snapshot.forEach((doc)=>{
+        snapshot.forEach((doc)=>{
 
             const dados = doc.data();
 
             lista.innerHTML += `
 
-              <div class="card">
+            <div class="presenca">
 
                 <h3>${dados.nome}</h3>
 
-                <p>Matrícula: ${dados.matricula}</p>
+                <p>
+                    Matrícula:
+                    ${dados.matricula}
+                </p>
 
-                <p>Turma: ${dados.turma}</p>
+                <p>
+                    Turma:
+                    ${dados.turma}
+                </p>
 
-                <p>Distância: ${dados.distancia} metros</p>
+                <p>
+                    Distância:
+                    ${dados.distancia} metros
+                </p>
 
-                <p>${dados.data}</p>
+                <p>
+                    ${dados.data}
+                </p>
 
-              </div>
+            </div>
 
             `;
 
-          });
+        });
 
-        }
+    });
 
-      );
+}
 
-    }
-
-    function gerarCodigo(){
-
-      return Math.random()
-
-      .toString(36)
-
-      .substring(2,10);
-
-    }
-
-    window.iniciarAula = iniciarAula;
-
-    window.abrirAluno = abrirAluno;
-
-  </script>
+</script>
 
 </body>
-
 </html>
