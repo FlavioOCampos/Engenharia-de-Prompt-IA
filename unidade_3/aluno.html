@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Aluno</title>
 
@@ -20,26 +17,103 @@ content="width=device-width, initial-scale=1.0">
 
 <h1>Confirmação de Presença</h1>
 
-<p>
-
-Clique para validar sua presença
-pela localização GPS.
-
-</p>
-
-<br>
+<input type="text" id="nome" placeholder="Digite seu nome">
 
 <button onclick="confirmarPresenca()">
-
 Confirmar presença
-
 </button>
 
 <p id="resultado"></p>
 
 </div>
 
-<script src="script.js"></script>
+<script type="module">
+
+import {
+  db,
+  collection,
+  addDoc
+} from './firebase.js';
+
+window.confirmarPresenca = function(){
+
+navigator.geolocation.getCurrentPosition(async(posicao)=>{
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const latProfessor =
+parseFloat(urlParams.get("lat"));
+
+const longProfessor =
+parseFloat(urlParams.get("long"));
+
+const latAluno =
+posicao.coords.latitude;
+
+const longAluno =
+posicao.coords.longitude;
+
+const distancia =
+calcularDistancia(
+latProfessor,
+longProfessor,
+latAluno,
+longAluno
+);
+
+const nome =
+document.getElementById("nome").value;
+
+if(distancia <= 100){
+
+await addDoc(collection(db, "presencas"), {
+
+nome: nome,
+distancia: Math.round(distancia),
+data: new Date().toLocaleString()
+
+});
+
+document.getElementById("resultado").innerHTML = `
+✅ Presença confirmada!<br>
+Distância: ${Math.round(distancia)} metros
+`;
+
+}else{
+
+document.getElementById("resultado").innerHTML = `
+❌ Você está longe da sala.
+`;
+
+}
+
+});
+
+}
+
+function calcularDistancia(lat1, lon1, lat2, lon2){
+
+const R = 6371e3;
+
+const φ1 = lat1 * Math.PI/180;
+const φ2 = lat2 * Math.PI/180;
+
+const Δφ = (lat2-lat1) * Math.PI/180;
+const Δλ = (lon2-lon1) * Math.PI/180;
+
+const a =
+Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+Math.cos(φ1) * Math.cos(φ2) *
+Math.sin(Δλ/2) * Math.sin(Δλ/2);
+
+const c =
+2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+return R * c;
+
+}
+
+</script>
 
 </body>
 </html>
