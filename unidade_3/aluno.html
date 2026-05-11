@@ -151,7 +151,32 @@
 
   <script type="module">
 
-    import { db } from "./firebase.js";
+   import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    addDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyCQXNXC...",
+    authDomain: "geopresenceai.firebaseapp.com",
+    projectId: "geopresenceai",
+    storageBucket: "geopresenceai.firebasestorage.app",
+    messagingSenderId: "50359090351",
+    appId: "1:50359090351:web:baee622c4487d20147685a"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
 
     import {
 
