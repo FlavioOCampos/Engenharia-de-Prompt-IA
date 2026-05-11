@@ -1,67 +1,136 @@
-* {
-    padding: 15px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #22c7a9;
-
-    color: white;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    margin-bottom: 15px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-button:hover {
-    opacity: 0.9;
+body{
+    background:#0d0d0d;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px 20px;
 }
 
-.link {
-    word-break: break-all;
-    margin-top: 15px;
+.container{
+    width:100%;
+    max-width:700px;
+    background:#1b1b1b;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
 }
 
-#listaPresencas {
-    margin-top: 20px;
+h1{
+    font-size:42px;
+    margin-bottom:10px;
 }
 
-.cardAluno {
-    background: #2d2d2d;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    margin-bottom: 10px;
+h2{
+    margin-top:30px;
+    margin-bottom:20px;
+    font-size:28px;
 }
 
-#map {
-    width: 100%;
-    height: 100vh;
+.subtitulo{
+    color:#bdbdbd;
+    margin-bottom:30px;
 }
 
-#qrcode {
-    margin-top: 20px;
-
-    background: white;
-
-    padding: 10px;
-
-    width: fit-content;
+input{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    margin-bottom:15px;
+    background:#2a2a2a;
+    color:white;
+    font-size:16px;
 }
 
-@media(max-width: 600px){
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#22c7a9;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-bottom:15px;
+}
 
-    .container {
-        padding: 25px;
+button:hover{
+    opacity:0.85;
+}
+
+a{
+    display:block;
+    text-decoration:none;
+    color:#22c7a9;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+#dadosLocalizacao{
+    margin-top:20px;
+    color:#d6d6d6;
+    line-height:1.8;
+}
+
+.cardAluno{
+    background:#2a2a2a;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:15px;
+    border-left:6px solid #22c7a9;
+}
+
+.cardAluno h3{
+    margin-bottom:10px;
+    font-size:22px;
+}
+
+.cardAluno p{
+    margin-top:6px;
+    color:#d7d7d7;
+}
+
+.info{
+    background:#232323;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+.sucesso{
+    background:#143d35;
+    color:#65ffcf;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+.erro{
+    background:#4a1f1f;
+    color:#ff9090;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+@media(max-width:768px){
+
+    h1{
+        font-size:32px;
     }
 
-    h1 {
-        font-size: 34px;
+    .container{
+        padding:20px;
     }
 
 }
