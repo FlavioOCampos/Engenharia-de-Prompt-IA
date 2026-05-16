@@ -1,1 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Painel Professor</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:#000;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.card{
+    width:430px;
+    background:#1e1e1e;
+    padding:25px;
+    border-radius:20px;
+}
+
+.topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.badge{
+    background:#31c7b7;
+    color:black;
+    font-weight:bold;
+    padding:8px 14px;
+    border-radius:10px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#2b2b2b;
+    color:white;
+    margin-bottom:14px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#31c7b7;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+#areaLink{
+    margin-top:15px;
+}
+
+.presenca{
+    background:#2b2b2b;
+    border-left:4px solid #31c7b7;
+    border-radius:14px;
+    padding:15px;
+    margin-top:15px;
+}
+
+.presenca h3{
+    margin-bottom:10px;
+}
+
+.presenca p{
+    margin-bottom:5px;
+}
+
+h2{
+    margin-top:20px;
+}
+
+#mapa{
+    width:100%;
+    height:300px;
+    margin-top:20px;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="topo">
+
+        <h1>Professor</h1>
+
+        <div class="badge" id="contador">
+            0 alunos
+        </div>
+
+    </div>
+
+    <input
+        type="text"
+        id="materia"
+        placeholder="Digite a matéria"
+    >
+
+    <button onclick="iniciarAula()">
+        Iniciar aula
+    </button>
+
+    <div id="areaLink"></div>
+
+    <div id="mapa"></div>
+
+    <h2>Presenças</h2>
+
+    <div id="lista"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    collection,
+    onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyCQXNXcAwQxrnrfp_LXyMZDYHQGFIgBhlY",
+  authDomain: "geopresenceai.firebaseapp.com",
+  projectId: "geopresenceai",
+  storageBucket: "geopresenceai.firebasestorage.app",
+  messagingSenderId: "50359090351",
+  appId: "1:50359090351:web:baee622c4487d20147685a"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+// INICIAR AULA
+window.iniciarAula = async function(){
+
+    navigator.geolocation.getCurrentPosition(async (posicao)=>{
+
+        const latitude = posicao.coords.latitude;
+
+        const longitude = posicao.coords.longitude;
+
+        // LIMPAR MAPA
+        document.getElementById("mapa").innerHTML = "";
+
+        // MAPA
+        const mapa = L.map('mapa').setView(
+            [latitude, longitude],
+            18
+        );
+
+        L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom:19
+            }
+        ).addTo(mapa);
+
+        L.marker([latitude, longitude])
+        .addTo(mapa)
+        .bindPopup("Local da aula")
+        .openPopup();
+
+        // MATÉRIA
+        const materia =
+        document.getElementById("materia").value;
+
+        // GERAR CÓDIGO
+        const codigo =
+        Math.random().toString(36).substring(2,7);
+
+        // SALVAR FIREBASE
+await setDoc(
+    doc(db, "aulas", codigo),
+    {
+        materia: materia,
+        latitude: latitude,
+        longitude: longitude,
+        criadaEm: new Date().toLocaleString()
+    }
+);
+
+        // SALVAR AULA
+       localStorage.setItem("codigoAula", codigo);
+
+        // LINK ALUNO
+        const linkAluno =
+        "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
+
+        window.linkAluno = linkAluno;
+
+        document.getElementById("areaLink").innerHTML = `
+
+    <div style="
+        background:#2b2b2b;
+        padding:15px;
+        border-radius:12px;
+        margin-top:15px;
+        margin-bottom:10px;
+    ">
+
+        <p style="margin-bottom:8px;">
+            Código da aula:
+        </p>
+
+        <h2 style="color:#31c7b7;">
+            ${codigo}
+        </h2>
+
+    </div>
+
+    <button onclick="abrirAluno()">
+        Abrir página do aluno
+    </button>
+
+    <button onclick="copiarLink()">
+        Copiar link
+    </button>
+
+`;
+
+        // BOTÕES
+        document.getElementById("areaLink").innerHTML = `
+
+            <button onclick="abrirAluno()">
+                Abrir página do aluno
+            </button>
+
+            <button onclick="copiarLink()">
+                Copiar link
+            </button>
+
+        `;
+
+        carregarPresencas();
+
+    });
+
+}
+
+
+// ABRIR ALUNO
+window.abrirAluno = function(){
+
+    window.open(
+        window.linkAluno,
+        "_blank"
+    );
+
+}
+
+
+// COPIAR LINK
+window.copiarLink = function(){
+
+    navigator.clipboard.writeText(
+        window.linkAluno
+    );
+
+    alert("Link copiado!");
+
+}
+
+
+// CARREGAR PRESENÇAS
+function carregarPresencas(){
+
+    onSnapshot(
+        collection(
+    db,
+    "aulas",
+    localStorage.getItem("codigoAula"),
+    "presencas"
+),
+        (snapshot)=>{
+
+            const lista =
+            document.getElementById("lista");
+
+            lista.innerHTML = "";
+
+            document.getElementById(
+                "contador"
+            ).innerHTML =
+            snapshot.size + " alunos";
+
+            snapshot.forEach((docItem)=>{
+
+                const dados = docItem.data();
+
+                lista.innerHTML += `
+
+                <div class="presenca">
+
+                    <h3>
+                        ${dados.nome}
+                    </h3>
+
+                    <p>
+                        Matrícula:
+                        ${dados.matricula}
+                    </p>
+
+                    <p>
+                        Turma:
+                        ${dados.turma}
+                    </p>
+
+                    <p>
+                        Distância:
+                        ${dados.distancia} metros
+                    </p>
+
+                    <p>
+                        ${dados.data}
+                    </p>
+
+                </div>
+
+                `;
+
+            });
+
+        }
+
+    );
+
+}
+
+</script>
+
+</body>
+</html>
