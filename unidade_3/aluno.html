@@ -202,14 +202,21 @@ const db = getFirestore(app);
 
       const aulaSnap = await getDoc(aulaRef);
 
+      const aula = aulaSnap.data();
+
+if(aula.encerrada){
+
+    alert("Aula encerrada pelo professor");
+
+    return;
+}
+
       if(!aulaSnap.exists()){
 
         alert("Aula não encontrada");
 
         return;
       }
-
-      const aula = aulaSnap.data();
 
       navigator.geolocation.getCurrentPosition(
 
