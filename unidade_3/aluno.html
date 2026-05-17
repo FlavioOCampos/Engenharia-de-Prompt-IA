@@ -333,7 +333,13 @@ if(presencaSnap.exists()){
 
       document.getElementById("mapaAluno").innerHTML = "";
 
-      const mapaAluno = L.map('mapaAluno').setView(
+      if(window.mapaAlunoInstance){
+
+    window.mapaAlunoInstance.remove();
+
+}
+
+      window.mapaAlunoInstance = L.map('mapaAluno').setView(
 
     [aula.latitude, aula.longitude],
 
@@ -346,19 +352,19 @@ L.tileLayer(
     {
         attribution:'© OpenStreetMap'
     }
-).addTo(mapaAluno);
+).addTo(window.mapaAlunoInstance);
 
 L.marker(
     [aula.latitude, aula.longitude]
 )
-.addTo(mapaAluno)
+.addTo(window.mapaAlunoInstance)
 .bindPopup("Local da aula")
 .openPopup();
 
 L.marker(
     [latAluno, longAluno]
 )
-.addTo(mapaAluno)
+.addTo(window.mapaAlunoInstance)
 .bindPopup("Sua localização");
 
 if(aula.encerrada){
