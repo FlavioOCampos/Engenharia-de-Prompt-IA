@@ -208,7 +208,7 @@ a{
 
 }
 
-#btnSair{
+button#btnSair{
 
     width:100%;
 
@@ -218,7 +218,7 @@ a{
 
 }
 
-#btnSair:hover{
+button#btnSair:hover{
 
     background:#ff1f1f !important;
 
