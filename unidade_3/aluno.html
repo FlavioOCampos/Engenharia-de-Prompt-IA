@@ -355,6 +355,12 @@ L.marker(
 .bindPopup("Local da aula")
 .openPopup();
 
+L.marker(
+    [latAluno, longAluno]
+)
+.addTo(mapaAluno)
+.bindPopup("Sua localização");
+
 if(aula.encerrada){
 
     alert("Aula encerrada pelo professor");
