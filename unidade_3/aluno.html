@@ -167,7 +167,7 @@ import {
     doc,
     getDoc,
     collection,
-    addDoc
+    setDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -262,25 +262,33 @@ if(aula.encerrada){
             return;
           }
 
-          await addDoc(
+         await setDoc(
 
-            collection(db, "aulas", codigo, "presencas"),
+    doc(
+        db,
+        "aulas",
+        codigo,
+        "presencas",
+        matricula
+    ),
 
-            {
+    {
 
-              nome:nome,
+        nome:nome,
 
-              matricula:matricula,
+        matricula:matricula,
 
-              turma:turma,
+        turma:turma,
 
-              distancia:Math.round(distancia),
+        distancia:Math.round(distancia),
 
-              data:new Date().toLocaleString()
+        data:new Date().toLocaleString(),
 
-            }
+        status:"Presente"
 
-          );
+    }
+
+);
 
           document.getElementById("resultado").innerHTML = `
 
