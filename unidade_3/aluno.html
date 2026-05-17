@@ -318,6 +318,47 @@ if(aula.encerrada){
 
     }
 
+    }
+
+async function sairDaAula(){
+
+    const matricula =
+    document.getElementById("matricula").value;
+
+    const codigo =
+    params.get("codigo");
+
+    if(!matricula){
+
+        alert("Informe a matrícula");
+
+        return;
+    }
+
+    await updateDoc(
+
+        doc(
+            db,
+            "aulas",
+            codigo,
+            "presencas",
+            matricula
+        ),
+
+        {
+
+            status:"Saiu",
+
+            saida:new Date().toLocaleString()
+
+        }
+
+    );
+
+    alert("Saída registrada");
+
+}
+
     function calcularDistancia(lat1, lon1, lat2, lon2){
 
       const R = 6371e3;
@@ -340,6 +381,10 @@ if(aula.encerrada){
       return R * c;
     }
 
+    document
+.getElementById("btnSair")
+.addEventListener("click", sairDaAula);
+  
     window.confirmarPresenca = confirmarPresenca;
 
   </script>
