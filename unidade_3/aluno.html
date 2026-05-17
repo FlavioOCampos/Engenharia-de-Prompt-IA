@@ -331,6 +331,30 @@ if(presencaSnap.exists()){
 
       const aula = aulaSnap.data();
 
+      document.getElementById("mapaAluno").innerHTML = "";
+
+      const mapaAluno = L.map('mapaAluno').setView(
+
+    [aula.latitude, aula.longitude],
+
+    18
+
+);
+
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution:'© OpenStreetMap'
+    }
+).addTo(mapaAluno);
+
+L.marker(
+    [aula.latitude, aula.longitude]
+)
+.addTo(mapaAluno)
+.bindPopup("Local da aula")
+.openPopup();
+
 if(aula.encerrada){
 
     alert("Aula encerrada pelo professor");
