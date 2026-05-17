@@ -208,3 +208,19 @@ a{
 
 }
 
+#btnSair{
+
+    width:100%;
+
+    margin-top:15px;
+
+    background:#ff3b5c;
+
+}
+
+#btnSair:hover{
+
+    background:#ff2448;
+
+}
+
