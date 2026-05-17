@@ -136,3 +136,30 @@ Distância: ${Math.round(distancia)} metros`;
 });
 
 }
+async function encerrarAula(){
+
+    const codigo =
+    localStorage.getItem("codigoAula");
+
+    if(!codigo){
+
+        alert("Nenhuma aula ativa");
+
+        return;
+    }
+
+    await updateDoc(
+
+        doc(db, "aulas", codigo),
+
+        {
+
+            encerrada:true
+
+        }
+
+    );
+
+    alert("Aula encerrada");
+
+}
