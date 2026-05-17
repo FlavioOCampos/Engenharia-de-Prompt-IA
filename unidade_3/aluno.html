@@ -287,6 +287,29 @@ const db = getFirestore(app);
 
       const aulaSnap = await getDoc(aulaRef);
 
+      const presencaRef = doc(
+    db,
+    "aulas",
+    codigo,
+    "presencas",
+    matricula
+);
+
+const presencaSnap = await getDoc(presencaRef);
+
+if(presencaSnap.exists()){
+
+    const presenca = presencaSnap.data();
+
+    if(presenca.status === "Saiu"){
+
+        alert("Você já saiu desta aula");
+
+        return;
+    }
+
+}
+
       const aula = aulaSnap.data();
 
 if(aula.encerrada){
