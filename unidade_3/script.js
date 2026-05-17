@@ -163,3 +163,5 @@ async function encerrarAula(){
     alert("Aula encerrada");
 
 }
+
+window.encerrarAula = encerrarAula;
