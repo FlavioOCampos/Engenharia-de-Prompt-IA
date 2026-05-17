@@ -192,4 +192,19 @@ a{
     margin-top:10px;
 
 }
+    .btnEncerrar{
+
+    width:100%;
+
+    background:#ff3b5c;
+
+    margin-top:15px;
+
+}
+
+.btnEncerrar:hover{
+
+    background:#ff2448;
+
+}
 
