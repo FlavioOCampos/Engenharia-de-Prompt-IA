@@ -214,6 +214,36 @@ const db = getFirestore(app);
 
     const codigo = params.get("codigo");
 
+    async function carregarAulas(){
+
+    const turmaSelect =
+    document.getElementById("turma");
+
+    const q = query(
+        collection(db, "aulas"),
+        where("encerrada", "!=", true)
+    );
+
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach((docItem)=>{
+
+        const aula = docItem.data();
+
+        turmaSelect.innerHTML += `
+
+            <option value="${aula.materia}">
+
+                ${aula.materia}
+
+            </option>
+
+        `;
+
+    });
+
+}
+
     async function confirmarPresenca(){
 
       const nome = document.getElementById("nome").value;
@@ -405,6 +435,8 @@ async function sairDaAula(){
     document
 .getElementById("btnSair")
 .addEventListener("click", sairDaAula);
+
+    carregarAulas();
   
     window.confirmarPresenca = confirmarPresenca;
 
