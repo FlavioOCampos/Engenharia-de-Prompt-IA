@@ -148,13 +148,14 @@ h2{
 
     <div id="areaLink"></div>
 
-    <button onclick="encerrarAula()"
-    class="btnEncerrar">
+   <button
+id="btnEncerrar"
+class="btnEncerrar">
 
-    Encerrar Aula
+Encerrar Aula
 
 </button>
-
+    
     <div id="mapa"></div>
 
     <h2>Presenças</h2>
@@ -418,7 +419,9 @@ function carregarPresencas(){
 
 }
 
-window.encerrarAula = encerrarAula;
+    document
+.getElementById("btnEncerrar")
+.addEventListener("click", encerrarAula);
 
 </script>
 
