@@ -212,15 +212,14 @@ a{
 
     width:100%;
 
-    margin-top:15px;
+    background:#ff4d4d;
 
-    background:#ff3b5c;
+    margin-top:15px;
 
 }
 
 #btnSair:hover{
 
-    background:#ff2448;
+    background:#ff1f1f;
 
 }
-
