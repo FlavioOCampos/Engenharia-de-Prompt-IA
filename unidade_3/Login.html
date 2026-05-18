@@ -1,1 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AulaTrack Login</title>
+
+<style>
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+
+}
+
+body{
+
+    background:#000;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+
+}
+
+.container{
+
+    width:90%;
+    max-width:400px;
+
+    background:#1e1e1e;
+
+    padding:40px;
+
+    border-radius:25px;
+
+}
+
+h1{
+
+    font-size:50px;
+    margin-bottom:10px;
+
+}
+
+p{
+
+    margin-bottom:30px;
+    color:#ccc;
+
+}
+
+input,select{
+
+    width:100%;
+
+    padding:16px;
+
+    margin-bottom:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2a2a2a;
+
+    color:white;
+
+    font-size:16px;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#36c5b7;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:10px;
+
+}
+
+button:hover{
+
+    opacity:0.9;
+
+}
+
+#mensagem{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+.logo{
+
+    color:#ff4d88;
+
+    font-size:25px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">📍</div>
+
+    <h1>AulaTrack</h1>
+
+    <p>Sistema Inteligente de Presença</p>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Email"
+    >
+
+    <input
+        type="password"
+        id="senha"
+        placeholder="Senha"
+    >
+
+    <select id="tipo">
+
+        <option value="professor">
+            Professor
+        </option>
+
+        <option value="aluno">
+            Aluno
+        </option>
+
+    </select>
+
+    <button onclick="cadastrar()">
+
+        Criar conta
+
+    </button>
+
+    <button onclick="login()">
+
+        Entrar
+
+    </button>
+
+    <div id="mensagem"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+    getAuth,
+
+    createUserWithEmailAndPassword,
+
+    signInWithEmailAndPassword
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+
+    getFirestore,
+
+    doc,
+
+    setDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyCQXNXcAwQxrnrfp_LXyMZDYHQGFIgBhLY",
+
+    authDomain: "geopresenceai.firebaseapp.com",
+
+    projectId: "geopresenceai",
+
+    storageBucket: "geopresenceai.firebasestorage.app",
+
+    messagingSenderId: "50359090351",
+
+    appId: "1:50359090351:web:baee622c4487d20147685a"
+
+};
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+async function cadastrar(){
+
+    const email =
+    document.getElementById("email").value;
+
+    const senha =
+    document.getElementById("senha").value;
+
+    const tipo =
+    document.getElementById("tipo").value;
+
+    try{
+
+        const usuario =
+        await createUserWithEmailAndPassword(
+
+            auth,
+            email,
+            senha
+
+        );
+
+        await setDoc(
+
+            doc(
+                db,
+                "usuarios",
+                usuario.user.uid
+            ),
+
+            {
+
+                email:email,
+
+                tipo:tipo
+
+            }
+
+        );
+
+        document
+        .getElementById("mensagem")
+        .innerHTML = "✅ Conta criada";
+
+    }
+
+    catch(erro){
+
+        document
+        .getElementById("mensagem")
+        .innerHTML = erro.message;
+
+    }
+
+}
+
+async function login(){
+
+    const email =
+    document.getElementById("email").value;
+
+    const senha =
+    document.getElementById("senha").value;
+
+    const tipo =
+    document.getElementById("tipo").value;
+
+    try{
+
+        await signInWithEmailAndPassword(
+
+            auth,
+            email,
+            senha
+
+        );
+
+        if(tipo == "professor"){
+
+            window.location.href =
+            "professor.html";
+
+        }
+
+        else{
+
+            window.location.href =
+            "aluno.html";
+
+        }
+
+    }
+
+    catch(erro){
+
+        document
+        .getElementById("mensagem")
+        .innerHTML = erro.message;
+
+    }
+
+}
+
+window.cadastrar = cadastrar;
+
+window.login = login;
+
+</script>
+
+</body>
+</html>
