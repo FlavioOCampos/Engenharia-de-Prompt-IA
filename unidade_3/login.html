@@ -2,346 +2,522 @@
 <html lang="pt-BR">
 
 <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AulaTrack Login</title>
 
-<meta charset="UTF-8">
-<link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        body {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
 
-<title>AulaTrack Login</title>
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
 
-<style>
+        .logo {
+            color: #ff4d88;
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-*{
+        h1 {
+            font-size: 40px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
 
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial;
+        p {
+            margin-bottom: 30px;
+            color: #ccc;
+            text-align: center;
+            font-size: 14px;
+        }
 
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-body{
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #aaa;
+        }
 
-    background:#000;
-    min-height:100vh;
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #2a2a2a;
+            border-radius: 12px;
+            background: #2a2a2a;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+        input:focus, select:focus {
+            outline: none;
+            border-color: #36c5b7;
+        }
 
-    color:white;
+        input::placeholder {
+            color: #666;
+        }
 
-}
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #36c5b7;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
 
-.container{
+        button:hover {
+            background: #2ca896;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(54, 197, 183, 0.3);
+        }
 
-    width:90%;
-    max-width:400px;
+        button:active {
+            transform: translateY(0);
+        }
 
-    background:#1e1e1e;
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
 
-    padding:40px;
+        #mensagem {
+            margin-top: 20px;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            display: none;
+        }
 
-    border-radius:25px;
+        #mensagem.sucesso {
+            background: #2d5016;
+            color: #90ee90;
+            display: block;
+        }
 
-}
+        #mensagem.erro {
+            background: #5c1e1e;
+            color: #ff6b6b;
+            display: block;
+        }
 
-h1{
+        #mensagem.info {
+            background: #1e3a5f;
+            color: #87ceeb;
+            display: block;
+        }
 
-    font-size:50px;
-    margin-bottom:10px;
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
 
-}
+        .toggle-mode a {
+            color: #36c5b7;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-p{
+        .toggle-mode a:hover {
+            text-decoration: underline;
+        }
 
-    margin-bottom:30px;
-    color:#ccc;
+        .hidden {
+            display: none;
+        }
 
-}
+        .formulario {
+            animation: fadeIn 0.3s ease-in;
+        }
 
-input,select{
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    width:100%;
+        .loader {
+            border: 4px solid #333;
+            border-top: 4px solid #36c5b7;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: none;
+            margin: 0 auto;
+        }
 
-    padding:16px;
-
-    margin-bottom:15px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#2a2a2a;
-
-    color:white;
-
-    font-size:16px;
-
-}
-
-button{
-
-    width:100%;
-
-    padding:16px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#36c5b7;
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    margin-top:10px;
-
-}
-
-button:hover{
-
-    opacity:0.9;
-
-}
-
-#mensagem{
-
-    margin-top:20px;
-
-    text-align:center;
-
-    font-weight:bold;
-
-}
-
-.logo{
-
-    color:#ff4d88;
-
-    font-size:25px;
-
-}
-
-</style>
-
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <!-- FORMULÁRIO DE LOGIN -->
+        <div id="loginForm" class="formulario">
+            <div class="logo">📍</div>
+            <h1>AulaTrack</h1>
+            <p>Sistema Inteligente de Presença</p>
 
-<div class="container">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="seu@email.com">
+            </div>
 
-    <div class="logo">📍</div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" placeholder="Sua senha">
+            </div>
 
-    <h1>AulaTrack</h1>
+            <div class="form-group">
+                <label for="tipo">Tipo de Usuário</label>
+                <select id="tipo">
+                    <option value="professor">👨‍🏫 Professor</option>
+                    <option value="aluno">👨‍🎓 Aluno</option>
+                </select>
+            </div>
 
-    <p>Sistema Inteligente de Presença</p>
+            <button onclick="fazerLogin()" id="btnLogin">Entrar</button>
+            <button onclick="mostrarRegistro()" style="background: #555; margin-top: 10px;">Criar Conta</button>
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email"
-    >
+            <div id="mensagem"></div>
 
-    <input
-        type="password"
-        id="senha"
-        placeholder="Senha"
-    >
+            <div class="toggle-mode">
+                <span onclick="mostrarDados()" style="cursor: pointer;">📋 Ver dados de teste</span>
+            </div>
+        </div>
 
-    <select id="tipo">
+        <!-- FORMULÁRIO DE REGISTRO -->
+        <div id="registroForm" class="formulario hidden">
+            <div class="logo">📍</div>
+            <h1>AulaTrack</h1>
+            <p>Criar Nova Conta</p>
 
-        <option value="professor">
-            Professor
-        </option>
+            <div class="form-group">
+                <label for="nomeRegistro">Nome Completo</label>
+                <input type="text" id="nomeRegistro" placeholder="Seu nome">
+            </div>
 
-        <option value="aluno">
-            Aluno
-        </option>
+            <div class="form-group">
+                <label for="emailRegistro">Email</label>
+                <input type="email" id="emailRegistro" placeholder="seu@email.com">
+            </div>
 
-    </select>
+            <div class="form-group">
+                <label for="senhaRegistro">Senha</label>
+                <input type="password" id="senhaRegistro" placeholder="Mínimo 6 caracteres">
+            </div>
 
-    <button onclick="cadastrar()">
+            <div class="form-group">
+                <label for="tipoRegistro">Tipo de Usuário</label>
+                <select id="tipoRegistro">
+                    <option value="professor">👨‍🏫 Professor</option>
+                    <option value="aluno">👨‍🎓 Aluno</option>
+                </select>
+            </div>
 
-        Criar conta
+            <button onclick="criarConta()" id="btnRegistro">Registrar</button>
+            <button onclick="mostrarLogin()" style="background: #555; margin-top: 10px;">Voltar ao Login</button>
 
-    </button>
+            <div id="mensagemRegistro"></div>
+        </div>
+    </div>
 
-    <button onclick="login()">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        Entrar
+        // ===== CONFIGURAÇÃO FIREBASE =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQXNXcAwQxrnrfp_LXyMZDYHQGFIgBhLY",
+            authDomain: "geopresenceai.firebaseapp.com",
+            projectId: "geopresenceai",
+            storageBucket: "geopresenceai.firebasestorage.app",
+            messagingSenderId: "50359090351",
+            appId: "1:50359090351:web:baee622c4487d20147685a"
+        };
 
-    </button>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    <div id="mensagem"></div>
+        // ===== FUNÇÕES DE INTERFACE =====
+        function mostrarMensagem(mensagem, tipo = 'info') {
+            const div = document.getElementById('mensagem');
+            div.innerHTML = mensagem;
+            div.className = '';
+            div.classList.add(tipo);
+            setTimeout(() => {
+                div.className = 'hidden';
+            }, 3000);
+        }
 
-</div>
+        function mostrarMensagemRegistro(mensagem, tipo = 'info') {
+            const div = document.getElementById('mensagemRegistro');
+            div.innerHTML = mensagem;
+            div.className = '';
+            div.classList.add(tipo);
+            setTimeout(() => {
+                div.className = 'hidden';
+            }, 3000);
+        }
 
-<script type="module">
+        function mostrarLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registroForm').classList.add('hidden');
+            document.getElementById('email').value = '';
+            document.getElementById('senha').value = '';
+            document.getElementById('mensagem').className = 'hidden';
+        }
 
-import { initializeApp }
+        function mostrarRegistro() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registroForm').classList.remove('hidden');
+            document.getElementById('mensagemRegistro').className = 'hidden';
+        }
 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        function mostrarDados() {
+            alert('Dados de Teste:\n\n' +
+                '👨‍🏫 PROFESSOR\n' +
+                'Email: professor@test.com\n' +
+                'Senha: 123456\n\n' +
+                '👨‍🎓 ALUNO\n' +
+                'Email: aluno@test.com\n' +
+                'Senha: 123456');
+        }
 
-import {
+        // ===== LOGIN =====
+        window.fazerLogin = async function() {
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+            const tipo = document.getElementById('tipo').value;
 
-    getAuth,
-
-    createUserWithEmailAndPassword,
-
-    signInWithEmailAndPassword
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-
-    getFirestore,
-
-    doc,
-
-    setDoc
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-
-    apiKey: "AIzaSyCQXNXcAwQxrnrfp_LXyMZDYHQGFIgBhLY",
-
-    authDomain: "geopresenceai.firebaseapp.com",
-
-    projectId: "geopresenceai",
-
-    storageBucket: "geopresenceai.firebasestorage.app",
-
-    messagingSenderId: "50359090351",
-
-    appId: "1:50359090351:web:baee622c4487d20147685a"
-
-};
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-async function cadastrar(){
-
-    const email =
-    document.getElementById("email").value;
-
-    const senha =
-    document.getElementById("senha").value;
-
-    const tipo =
-    document.getElementById("tipo").value;
-
-    try{
-
-        const usuario =
-        await createUserWithEmailAndPassword(
-
-            auth,
-            email,
-            senha
-
-        );
-
-        await setDoc(
-
-            doc(
-                db,
-                "usuarios",
-                usuario.user.uid
-            ),
-
-            {
-
-                email:email,
-
-                tipo:tipo
-
+            // Validações
+            if (!email) {
+                mostrarMensagem('❌ Por favor, digite seu email', 'erro');
+                return;
             }
 
-        );
+            if (!senha) {
+                mostrarMensagem('❌ Por favor, digite sua senha', 'erro');
+                return;
+            }
 
-        document
-        .getElementById("mensagem")
-        .innerHTML = "✅ Conta criada";
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                mostrarMensagem('❌ Email inválido', 'erro');
+                return;
+            }
 
-    }
+            // Desabilitar botão
+            document.getElementById('btnLogin').disabled = true;
+            document.getElementById('btnLogin').innerHTML = '⏳ Entrando...';
 
-    catch(erro){
+            try {
+                // Autenticar no Firebase
+                const resultado = await signInWithEmailAndPassword(auth, email, senha);
+                const uid = resultado.user.uid;
 
-        document
-        .getElementById("mensagem")
-        .innerHTML = erro.message;
+                // Verificar dados do usuário no Firestore
+                const docRef = doc(db, "usuarios", uid);
+                const docSnap = await getDoc(docRef);
 
-    }
+                if (docSnap.exists()) {
+                    const dadosUsuario = docSnap.data();
+                    
+                    // Salvar no localStorage
+                    localStorage.setItem('usuarioLogado', JSON.stringify({
+                        uid: uid,
+                        email: email,
+                        tipo: dadosUsuario.tipo,
+                        nome: dadosUsuario.nome,
+                        dataLogin: new Date().toLocaleString('pt-BR')
+                    }));
 
-}
+                    mostrarMensagem('✅ Login realizado com sucesso!', 'sucesso');
 
-async function login(){
+                    // Redirecionar
+                    setTimeout(() => {
+                        if (dadosUsuario.tipo === 'professor') {
+                            window.location.href = 'professor.html';
+                        } else {
+                            window.location.href = 'aluno.html';
+                        }
+                    }, 1000);
+                } else {
+                    mostrarMensagem('❌ Dados do usuário não encontrados', 'erro');
+                    document.getElementById('btnLogin').disabled = false;
+                    document.getElementById('btnLogin').innerHTML = 'Entrar';
+                }
+            } catch (erro) {
+                console.error('Erro de login:', erro.code);
+                
+                let mensagemErro = '❌ Erro ao fazer login';
+                
+                if (erro.code === 'auth/user-not-found') {
+                    mensagemErro = '❌ Email não cadastrado';
+                } else if (erro.code === 'auth/wrong-password') {
+                    mensagemErro = '❌ Senha incorreta';
+                } else if (erro.code === 'auth/invalid-email') {
+                    mensagemErro = '❌ Email inválido';
+                }
+                
+                mostrarMensagem(mensagemErro, 'erro');
+                document.getElementById('btnLogin').disabled = false;
+                document.getElementById('btnLogin').innerHTML = 'Entrar';
+            }
+        };
 
-    const email =
-    document.getElementById("email").value;
+        // ===== REGISTRAR =====
+        window.criarConta = async function() {
+            const nome = document.getElementById('nomeRegistro').value.trim();
+            const email = document.getElementById('emailRegistro').value.trim();
+            const senha = document.getElementById('senhaRegistro').value.trim();
+            const tipo = document.getElementById('tipoRegistro').value;
 
-    const senha =
-    document.getElementById("senha").value;
+            // Validações
+            if (!nome) {
+                mostrarMensagemRegistro('❌ Por favor, digite seu nome', 'erro');
+                return;
+            }
 
-    const tipo =
-    document.getElementById("tipo").value;
+            if (!email) {
+                mostrarMensagemRegistro('❌ Por favor, digite seu email', 'erro');
+                return;
+            }
 
-    try{
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                mostrarMensagemRegistro('❌ Email inválido', 'erro');
+                return;
+            }
 
-        await signInWithEmailAndPassword(
+            if (!senha || senha.length < 6) {
+                mostrarMensagemRegistro('❌ Senha deve ter mínimo 6 caracteres', 'erro');
+                return;
+            }
 
-            auth,
-            email,
-            senha
+            // Desabilitar botão
+            document.getElementById('btnRegistro').disabled = true;
+            document.getElementById('btnRegistro').innerHTML = '⏳ Registrando...';
 
-        );
+            try {
+                // Criar usuário no Firebase Auth
+                const resultado = await createUserWithEmailAndPassword(auth, email, senha);
+                const uid = resultado.user.uid;
 
-        if(tipo == "professor"){
+                // Salvar dados do usuário no Firestore
+                await setDoc(doc(db, "usuarios", uid), {
+                    email: email,
+                    nome: nome,
+                    tipo: tipo,
+                    dataCriacao: new Date().toLocaleString('pt-BR')
+                });
 
-            window.location.href =
-            "professor.html";
+                mostrarMensagemRegistro('✅ Conta criada com sucesso! Faça login agora.', 'sucesso');
 
-        }
+                // Limpar formulário
+                document.getElementById('nomeRegistro').value = '';
+                document.getElementById('emailRegistro').value = '';
+                document.getElementById('senhaRegistro').value = '';
 
-        else{
+                // Voltar para login
+                setTimeout(() => {
+                    mostrarLogin();
+                    document.getElementById('btnRegistro').disabled = false;
+                    document.getElementById('btnRegistro').innerHTML = 'Registrar';
+                }, 2000);
+            } catch (erro) {
+                console.error('Erro ao registrar:', erro.code);
+                
+                let mensagemErro = '❌ Erro ao criar conta';
+                
+                if (erro.code === 'auth/email-already-in-use') {
+                    mensagemErro = '❌ Este email já está cadastrado';
+                } else if (erro.code === 'auth/weak-password') {
+                    mensagemErro = '❌ Senha muito fraca';
+                } else if (erro.code === 'auth/invalid-email') {
+                    mensagemErro = '❌ Email inválido';
+                }
+                
+                mostrarMensagemRegistro(mensagemErro, 'erro');
+                document.getElementById('btnRegistro').disabled = false;
+                document.getElementById('btnRegistro').innerHTML = 'Registrar';
+            }
+        };
 
-            window.location.href =
-            "aluno.html";
+        // ===== EVENT LISTENERS =====
+        document.getElementById('senha').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                window.fazerLogin();
+            }
+        });
 
-        }
+        document.getElementById('senhaRegistro').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                window.criarConta();
+            }
+        });
 
-    }
+        // Expor funções globais
+        window.mostrarLogin = mostrarLogin;
+        window.mostrarRegistro = mostrarRegistro;
+        window.mostrarDados = mostrarDados;
 
-    catch(erro){
-
-        document
-        .getElementById("mensagem")
-        .innerHTML = erro.message;
-
-    }
-
-}
-
-window.cadastrar = cadastrar;
-
-window.login = login;
-
-</script>
+    </script>
 
 </body>
+
 </html>
