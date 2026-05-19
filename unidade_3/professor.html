@@ -493,7 +493,7 @@ await setDoc(
 
         // LINK ALUNO
         const linkAluno =
-        "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
+        "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + idAula;
 
         window.linkAluno = linkAluno;
 
@@ -512,7 +512,7 @@ await setDoc(
         </p>
 
         <h2 style="color:#31c7b7;">
-            ${codigo}
+            ${idAula}
         </h2>
 
     </div>
@@ -788,8 +788,7 @@ async function retomarAula(idAula){
         idAula
     );
 
-    const dados =
-    listaAulas.querySelector("h3");
+   
 
     const linkAluno =
     "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + idAula;
