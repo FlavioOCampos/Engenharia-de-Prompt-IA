@@ -788,6 +788,44 @@ async function retomarAula(idAula){
         idAula
     );
 
+    const dados =
+    listaAulas.querySelector("h3");
+
+    const linkAluno =
+    "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + idAula;
+
+    window.linkAluno = linkAluno;
+
+    document.getElementById("areaLink").innerHTML = `
+
+        <div style="
+            background:#2b2b2b;
+            padding:15px;
+            border-radius:12px;
+            margin-top:15px;
+            margin-bottom:10px;
+        ">
+
+            <p style="margin-bottom:8px;">
+                Código da aula:
+            </p>
+
+            <h2 style="color:#31c7b7;">
+                ${idAula}
+            </h2>
+
+        </div>
+
+        <button onclick="abrirAluno()">
+            Abrir página do aluno
+        </button>
+
+        <button onclick="copiarLink()">
+            Copiar link
+        </button>
+
+    `;
+
     carregarPresencas();
 
     fecharModalAulas();
@@ -795,7 +833,6 @@ async function retomarAula(idAula){
     alert("Aula restaurada com sucesso");
 
 }
-
 </script>
 
 <div id="modalAulas" class="modal">
