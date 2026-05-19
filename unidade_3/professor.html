@@ -216,7 +216,7 @@ button.btnEncerrar:hover{
 
     align-items:center;
 
-    z-index:999;
+    z-index:99999;
 
 }
 
@@ -382,7 +382,7 @@ button.btnEncerrar:hover{
 
         <span class="live-dot"></span>
 
-        Aulas Ao Vivo
+        Aulas Ativas
 
     </button>
    
@@ -690,11 +690,33 @@ function abrirModalAulas(){
 
     modal.style.display = "flex";
 
+    const controles =
+    document.querySelector(
+        ".leaflet-control-container"
+    );
+
+    if(controles){
+
+        controles.style.display = "none";
+
+    }
+
 }
 
 function fecharModalAulas(){
 
     modal.style.display = "none";
+
+    const controles =
+    document.querySelector(
+        ".leaflet-control-container"
+    );
+
+    if(controles){
+
+        controles.style.display = "block";
+
+    }
 
 }
 
@@ -782,7 +804,7 @@ async function retomarAula(idAula){
 
         <div class="topo-modal">
 
-            <h2>Aulas Ao Vivo</h2>
+         <h2>Minhas Aulas</h2>
 
             <button
                 class="fechar"
