@@ -122,6 +122,220 @@ button.btnEncerrar:hover{
 
 }
 
+.btn-live{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#262626;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+}
+
+.live-dot{
+
+    width:12px;
+
+    height:12px;
+
+    background:#ff3b3b;
+
+    border-radius:50%;
+
+    animation:pulse 1s infinite;
+
+    box-shadow:0 0 10px #ff3b3b;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+    50%{
+
+        transform:scale(1.5);
+
+        opacity:0.5;
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+.modal{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999;
+
+}
+
+.modal-content{
+
+    width:90%;
+    max-width:500px;
+
+    max-height:80vh;
+
+    overflow-y:auto;
+
+    background:#1f1f1f;
+
+    padding:25px;
+
+    border-radius:25px;
+
+}
+
+.topo-modal{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.topo-modal h2{
+
+    font-size:28px;
+
+}
+
+.fechar{
+
+    background:#ff4d4d;
+
+    border:none;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+}
+
+.card-aula{
+
+    background:#2a2a2a;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    margin-bottom:15px;
+
+    border-left:5px solid #36c5b7;
+
+}
+
+.card-info{
+
+    color:#ccc;
+
+    margin-top:8px;
+
+}
+
+.card-botoes{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+
+}
+
+.btn-card{
+
+    flex:1;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.btn-abrir{
+
+    background:#36c5b7;
+
+}
+
+.btn-encerrar{
+
+    background:#ff4d4d;
+
+}
+
 </style>
 </head>
 
@@ -159,9 +373,19 @@ button.btnEncerrar:hover{
     >
 
     <button onclick="iniciarAula()">
+        
         Iniciar aula
+        
     </button>
 
+    <button class="btn-live" onclick="abrirModalAulas()">
+
+        <span class="live-dot"></span>
+
+        Aulas Ao Vivo
+
+    </button>
+   
     <div id="areaLink"></div>
 
    <button
@@ -191,7 +415,9 @@ import {
     setDoc,
     collection,
     onSnapshot,
-    updateDoc
+    updateDoc,
+    query,
+    where
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -258,6 +484,7 @@ await setDoc(
         longitude: longitude,
         criadaEm: new Date().toLocaleString(),
         encerrada:false
+        status:"em_andamento",
     }
 );
 
@@ -437,8 +664,10 @@ function carregarPresencas(){
 
         {
 
-            encerrada:true
+            encerrada:true,
 
+        status:"finalizada"
+            
         }
 
     );
@@ -451,7 +680,86 @@ function carregarPresencas(){
 .getElementById("btnEncerrar")
 .addEventListener("click", encerrarAula);
 
+    const modal =
+document.getElementById("modalAulas");
+
+const listaAulas =
+document.getElementById("listaAulasAtivas");
+
+function abrirModalAulas(){
+
+    modal.style.display = "flex";
+
+}
+
+function fecharModalAulas(){
+
+    modal.style.display = "none";
+
+}
+
+window.abrirModalAulas =
+abrirModalAulas;
+
+window.fecharModalAulas =
+fecharModalAulas;
+
+const q = query(
+
+    collection(db,"aulas"),
+
+    where("status","==","em_andamento")
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+    listaAulas.innerHTML = "";
+
+    if(snapshot.empty){
+
+        listaAulas.innerHTML = `
+
+            <p style="text-align:center;color:#888;">
+
+                Nenhuma aula em andamento
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+   
+
 </script>
+
+<div id="modalAulas" class="modal">
+
+    <div class="modal-content">
+
+        <div class="topo-modal">
+
+            <h2>Aulas Ao Vivo</h2>
+
+            <button
+                class="fechar"
+                onclick="fecharModalAulas()"
+            >
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div id="listaAulasAtivas"></div>
+
+    </div>
+
+</div>
 
 </body>
 </html>
