@@ -783,12 +783,12 @@ onSnapshot(q,(snapshot)=>{
 
 async function retomarAula(idAula){
 
+    codigo = idAula;
+
     localStorage.setItem(
         "codigoAula",
         idAula
     );
-
-   
 
     const linkAluno =
     "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + idAula;
