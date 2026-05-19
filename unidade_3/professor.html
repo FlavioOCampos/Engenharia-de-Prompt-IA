@@ -435,6 +435,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+    
+    let codigo = "";
 
 
 // INICIAR AULA
@@ -493,7 +495,7 @@ await setDoc(
 
         // LINK ALUNO
         const linkAluno =
-        "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + idAula;
+        "https://FlavioOCampos.github.io/Engenharia-de-Prompt-IA/unidade_3/aluno.html?codigo=" + codigo;
 
         window.linkAluno = linkAluno;
 
@@ -512,7 +514,7 @@ await setDoc(
         </p>
 
         <h2 style="color:#31c7b7;">
-            ${idAula}
+           ${codigo}
         </h2>
 
     </div>
