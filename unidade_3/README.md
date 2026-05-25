@@ -104,7 +104,21 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 ## 🔹 Protótipo Inicial — GitHub Copilot / Claude Haiku
 
-A primeira versão do AulaTrack foi desenvolvida utilizando GitHub Copilot / Claude Haiku, focando em validação rápida da ideia utilizando HTML, CSS e JavaScript puro com armazenamento local.
+## 🔹 Primeira Versão — GitHub + Claude Haiku
+
+## 🔹 Primeira Versão — GitHub + Claude Haiku
+
+A primeira versão do AulaTrack foi desenvolvida utilizando GitHub integrado ao modelo Claude Haiku, focando em prototipagem rápida utilizando HTML, CSS e JavaScript puro.
+
+Essa etapa permitiu validar rapidamente:
+- fluxo entre professor e aluno,
+- controle de presença,
+- experiência visual,
+- estrutura inicial do sistema.
+
+O protótipo inicial utilizava localStorage e lógica simplificada para simular persistência de dados e validar o conceito da aplicação.
+
+---
 
 ### 🔗 Acessar Protótipo Inicial
 ➡️ [Clique aqui para abrir o protótipo desenvolvido com GitHub Copilot / Claude Haiku](https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/prototipo_inicial/index.html)
@@ -121,6 +135,25 @@ Com auxílio de Inteligência Artificial generativa, principalmenteGitHub Copilo
 
 ### 🟢 Vibe Coding
 Grande parte do desenvolvimento ocorreu através de interação iterativa com IA utilizando prompts refinados, ajustes em tempo real, experimentação visual e evolução contínua do sistema. Essa abordagem permitiu transformar rapidamente ideias em funcionalidades reais.
+
+## 🔹 Evolução do Projeto — ChatGPT + Firebase
+
+Durante o desenvolvimento foram identificadas limitações relacionadas ao uso gratuito e limite de interações do Claude Haiku no GitHub.
+
+Devido à necessidade de evolução contínua do projeto e implementação de funcionalidades mais avançadas, o desenvolvimento passou a utilizar ChatGPT como principal ferramenta de apoio, aproveitando maior disponibilidade de uso através de conta pessoal.
+
+Essa mudança permitiu evoluir significativamente o projeto, principalmente na implementação de:
+
+- Firebase Authentication
+- Cloud Firestore
+- Atualização em tempo real
+- Sistema de retomada de aulas
+- Persistência online
+- Organização arquitetural
+- Melhorias visuais e estruturais
+- Integração GPS em tempo real
+
+Com isso, o AulaTrack deixou de ser apenas um protótipo local e passou a funcionar como um sistema web online integrado ao Firebase.
 
 ### ⚫ Programação Tradicional
 Além das abordagens assistidas por IA, também foram aplicados conhecimentos tradicionais de desenvolvimento web utilizando:
