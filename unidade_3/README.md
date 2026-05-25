@@ -102,12 +102,12 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 # 🧠 Processo de Desenvolvimento com IA
 
-## 🔹 Protótipo Inicial — Claude Haiku
+## 🔹 Protótipo Inicial — GitHub Copilot / Claude Haiku
 
-A primeira versão do AulaTrack foi desenvolvida utilizando Claude Haiku, focando em validação rápida da ideia utilizando HTML, CSS e JavaScript puro com armazenamento local.
+A primeira versão do AulaTrack foi desenvolvida utilizando GitHub Copilot / Claude Haiku, focando em validação rápida da ideia utilizando HTML, CSS e JavaScript puro com armazenamento local.
 
 ### 🔗 Acessar Protótipo Inicial
-➡️ [Clique aqui para abrir o protótipo desenvolvido com Claude Haiku](https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/prototipo_inicial/index.html)
+➡️ [Clique aqui para abrir o protótipo desenvolvido com GitHub Copilot / Claude Haiku](https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/prototipo_inicial/index.html)
 
 ## 🔄 Aplicação de Low-Code, No-Code e Vibe Coding
 
@@ -117,7 +117,7 @@ Durante o desenvolvimento do AulaTrack foram utilizadas diferentes abordagens mo
 Na fase inicial, a ideia do sistema foi validada rapidamente utilizando prototipagem visual e estruturas simplificadas geradas por IA, permitindo construir fluxos funcionais sem necessidade imediata de arquitetura complexa.
 
 ### 🔵 Low-Code
-Com auxílio de Inteligência Artificial generativa, principalmente Claude Haiku e ChatGPT, o projeto evoluiu utilizando geração assistida de código, acelerando a implementação de interfaces, lógica de negócio e integração com APIs.
+Com auxílio de Inteligência Artificial generativa, principalmenteGitHub Copilot / Claude Haiku e ChatGPT, o projeto evoluiu utilizando geração assistida de código, acelerando a implementação de interfaces, lógica de negócio e integração com APIs.
 
 ### 🟢 Vibe Coding
 Grande parte do desenvolvimento ocorreu através de interação iterativa com IA utilizando prompts refinados, ajustes em tempo real, experimentação visual e evolução contínua do sistema. Essa abordagem permitiu transformar rapidamente ideias em funcionalidades reais.
@@ -137,9 +137,9 @@ Essa combinação demonstrou como diferentes paradigmas modernos de desenvolvime
 
 O desenvolvimento do AulaTrack passou por diferentes etapas utilizando ferramentas de Inteligência Artificial generativa.
 
-## 🔹 Primeira Versão — Claude Haiku
+## 🔹 Primeira Versão — GitHub Copilot / Claude Haiku
 
-O protótipo inicial foi desenvolvido utilizando o modelo Claude Haiku, focando em:
+O protótipo inicial foi desenvolvido utilizando o modelo GitHub Copilot / Claude Haiku, focando em:
 
 - Estrutura inicial em HTML/CSS/JavaScript
 - Interface visual inicial
