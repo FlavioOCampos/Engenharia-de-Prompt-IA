@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AulaTrack - Sistema de Presença</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #ffd3b6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+        
+        .logo h1 {
+            color: #333;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4CAF50 0%, #FF69B4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type='text'],
+        input[type='password'],
+        input[type='email'],
+        input[type='time'],
+        input[type='date'],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 13px;
+            width: auto;
+            margin: 2px;
+        }
+        
+        .link-switch {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .link-switch a {
+            color: #4CAF50;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .link-switch a:hover {
+            color: #FF69B4;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .aula-link-box {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .aula-link-box h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .link-container {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-copy {
+            background: #667eea;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .btn-copy:hover {
+            background: #5568d3;
+        }
+        
+        .alunos-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        
+        .alunos-table th {
+            background: linear-gradient(135deg, #4CAF50 0%, #FF69B4 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .alunos-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .alunos-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .status-presente {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .status-ausente {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .status-aguardando {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .header-prof {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .header-prof h2 {
+            margin: 0;
+            flex: 1;
+            text-align: left;
+            font-size: 20px;
+        }
+        
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .aula-info {
+            background: #e7f3ff;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .aula-info p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LOGO -->
+        <div class="logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Círculo de fundo -->
+                <circle cx="100" cy="100" r="95" fill="none" stroke="url(#gradiente)" stroke-width="3"/>
+                
+                <!-- Gradiente -->
+                <defs>
+                    <linearGradient id="gradiente" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                
+                <!-- Ícone de localização -->
+                <path d="M 100 50 C 85 50 75 60 75 75 C 75 90 100 130 100 130 C 100 130 125 90 125 75 C 125 60 115 50 100 50 Z M 100 80 C 95 80 91 84 91 89 C 91 94 95 98 100 98 C 105 98 109 94 109 89 C 109 84 105 80 100 80 Z" fill="url(#gradiente)"/>
+                
+                <!-- Relógio -->
+                <circle cx="140" cy="140" r="20" fill="#4CAF50" opacity="0.8"/>
+                <line x1="140" y1="132" x2="140" y2="138" stroke="white" stroke-width="2"/>
+                <line x1="140" y1="140" x2="146" y2="140" stroke="white" stroke-width="2"/>
+            </svg>
+            <h1>AulaTrack</h1>
+            <p>Sistema de Presença com GPS</p>
+        </div>
+
+        <!-- TELA DE LOGIN DO PROFESSOR -->
+        <div id="loginProfessor" class="screen active">
+            <h2>🔐 Login do Professor</h2>
+            <div class="error" id="erroProfessor"></div>
+            
+            <div class="form-group">
+                <label for="senhaProfessor">Senha do Professor</label>
+                <input type="password" id="senhaProfessor" placeholder="Digite a senha">
+            </div>
+            
+            <button class="btn-primary" onclick="validarSenhaProfessor()">Entrar</button>
+            
+            <div class="link-switch">
+                Não é professor? <a onclick="telaAluno()">Acesse como Aluno</a>
+            </div>
+        </div>
+
+        <!-- TELA CADASTRO EMAIL PROFESSOR -->
+        <div id="cadastroEmailProfessor" class="screen">
+            <h2>📧 Cadastro do Professor</h2>
+            <div class="error" id="erroCadastro"></div>
+            <div class="info-box">
+                Complete seu cadastro para acessar o sistema.
+            </div>
+            
+            <div class="form-group">
+                <label for="nomeProfessor">Nome Completo</label>
+                <input type="text" id="nomeProfessor" placeholder="Seu nome">
+            </div>
+            
+            <div class="form-group">
+                <label for="emailProfessor">Email</label>
+                <input type="email" id="emailProfessor" placeholder="seu@email.com">
+            </div>
+            
+            <button class="btn-primary" onclick="salvarProfessor()">Continuar</button>
+        </div>
+
+        <!-- TELA DASHBOARD DO PROFESSOR -->
+        <div id="dashboardProfessor" class="screen">
+            <div class="header-prof">
+                <h2>Dashboard</h2>
+                <button class="btn-logout" onclick="logout()">Sair</button>
+            </div>
+            
+            <div class="info-box">
+                Bem-vindo, <strong id="nomeProfDisplay"></strong>!
+            </div>
+            
+            <button class="btn-primary" onclick="mostrarTelaCriarAula()">+ CRIAR NOVA AULA</button>
+            
+            <div id="aulaAtiva" style="display: none;">
+                <div class="aula-link-box">
+                    <h4>📍 Aula Ativa</h4>
+                    <p id="infoAulaAtiva"></p>
+                    <div class="link-container" id="linkAula"></div>
+                    <button class="btn-copy" onclick="copiarLink()">📋 Copiar Link</button>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Presença dos Alunos</h3>
+                <table class="alunos-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>RGM</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaAlunos">
+                    </tbody>
+                </table>
+                
+                <button class="btn-danger" onclick="encerrarAula()" style="margin-top: 20px; width: 100%;">🛑 ENCERRAR AULA</button>
+            </div>
+            
+            <div id="semAula" style="text-align: center; padding: 40px 0;">
+                <p style="color: #999; font-size: 14px;">Nenhuma aula ativa</p>
+            </div>
+        </div>
+
+        <!-- TELA CRIAR AULA -->
+        <div id="criarAula" class="screen">
+            <h2>➕ Criar Nova Aula</h2>
+            <div class="error" id="erroCriarAula"></div>
+            
+            <div class="form-group">
+                <label for="materia">Disciplina/Matéria</label>
+                <input type="text" id="materia" placeholder="Ex: Engenharia de Prompt IA">
+            </div>
+            
+            <div class="form-group">
+                <label for="dataAula">Data da Aula</label>
+                <input type="date" id="dataAula">
+            </div>
+            
+            <div class="form-group">
+                <label for="horaInicio">Hora de Início</label>
+                <input type="time" id="horaInicio" value="19:00">
+            </div>
+            
+            <div class="form-group">
+                <label for="duracao">Duração da Aula</label>
+                <input type="time" id="duracao" value="03:40">
+            </div>
+            
+            <div class="form-group">
+                <label for="intervalo">Intervalo (minutos)</label>
+                <input type="number" id="intervalo" value="20">
+            </div>
+            
+            <div class="form-group">
+                <label for="raioProfessor">Raio Permitido (metros)</label>
+                <input type="number" id="raioProfessor" value="50">
+            </div>
+            
+            <div class="form-group">
+                <label for="localAula">Local da Aula</label>
+                <textarea id="localAula" rows="2" placeholder="Descrição do local, prédio, sala, etc.">SEPS 704/904 - Conjunto A, Asa Sul, Brasília - DF</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="latitudeProfessor">Latitude</label>
+                <input type="text" id="latitudeProfessor" value="-15.8026769" placeholder="-15.8026769">
+            </div>
+            
+            <div class="form-group">
+                <label for="longitudeProfessor">Longitude</label>
+                <input type="text" id="longitudeProfessor" value="-47.8994031" placeholder="-47.8994031">
+            </div>
+            
+            <button class="btn-primary" onclick="criarAula()">✅ CRIAR AULA</button>
+            <button class="btn-secondary" onclick="voltarDashboard()" style="background: #ddd; color: #333;">Cancelar</button>
+        </div>
+
+        <!-- TELA DO ALUNO -->
+        <div id="telaAluno" class="screen">
+            <h2>📍 Chamada de Presença</h2>
+            <div class="error" id="erroAluno"></div>
+            <div class="success" id="sucessoAluno"></div>
+            
+            <div class="aula-info" id="infoAulaAluno" style="display: none;">
+                <p><strong>Disciplina:</strong> <span id="materiaAluno"></span></p>
+                <p><strong>Horário:</strong> <span id="horarioAluno"></span></p>
+                <p><strong>Local:</strong> <span id="localAluno"></span></p>
+                <p><strong>Horário Atual:</strong> <span id="horarioAtualAluno">--:--:--</span></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="nomeAluno">Nome do Aluno *</label>
+                <input type="text" id="nomeAluno" placeholder="Digite seu nome completo">
+            </div>
+            
+            <div class="form-group">
+                <label for="rgmAluno">RGM (Matrícula) *</label>
+                <input type="text" id="rgmAluno" placeholder="Digite seu RGM">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" onclick="registrarEntradaAluno()" style="background: #4CAF50;">✅ ENTRADA</button>
+                <button class="btn-secondary" onclick="registrarSaidaAluno()" style="background: #FF69B4;">🚪 SAÍDA</button>
+            </div>
+            
+            <button class="btn-secondary" onclick="voltarTelaAluno()" style="background: #ddd; color: #333; margin-top: 10px;">← Voltar</button>
+        </div>
+
+        <!-- TELA CONFIRMAÇÃO PRESENÇA -->
+        <div id="confirmacaoPresenca" class="screen">
+            <div style="text-align: center; padding: 40px 20px;">
+                <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 20px;">
+                    <circle cx="40" cy="40" r="38" fill="none" stroke="#4CAF50" stroke-width="2"/>
+                    <path d="M 20 40 L 35 55 L 60 25" stroke="#4CAF50" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                
+                <h2>✅ PRESENÇA CONFIRMADA!</h2>
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                    Sua presença na aula foi registrada com sucesso.
+                </p>
+                
+                <div class="info-box" id="detalhesConfirmacao"></div>
+                
+                <button class="btn-primary" onclick="novaPresenca()">➕ Registrar Outra Presença</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados globais
+        let professor = JSON.parse(localStorage.getItem('professor')) || null;
+        let aulaAtiva = JSON.parse(localStorage.getItem('aulaAtiva')) || null;
+        let presencas = JSON.parse(localStorage.getItem('presencas')) || {};
+        let parametrosAula = JSON.parse(localStorage.getItem('parametrosAula')) || {};
+        const SENHA_PADRAO = 'aulatrack';
+        
+        // Atualizar horário em tempo real (Aluno)
+        setInterval(() => {
+            const agora = new Date();
+            const h = String(agora.getHours()).padStart(2, '0');
+            const m = String(agora.getMinutes()).padStart(2, '0');
+            const s = String(agora.getSeconds()).padStart(2, '0');
+            const el = document.getElementById('horarioAtualAluno');
+            if (el) el.textContent = `${h}:${m}:${s}`;
+        }, 1000);
+        
+        // ============ PROFESSOR ============
+        function validarSenhaProfessor() {
+            const senha = document.getElementById('senhaProfessor').value;
+            if (senha === SENHA_PADRAO) {
+                if (professor && professor.email) {
+                    mostrarTela('dashboardProfessor');
+                    atualizarDashboard();
+                } else {
+                    mostrarTela('cadastroEmailProfessor');
+                }
+            } else {
+                mostrarErro('erroProfessor', 'Senha incorreta!');
+            }
+        }
+        
+        function salvarProfessor() {
+            const nome = document.getElementById('nomeProfessor').value.trim();
+            const email = document.getElementById('emailProfessor').value.trim();
+            
+            if (!nome || !email) {
+                mostrarErro('erroCadastro', 'Preencha todos os campos!');
+                return;
+            }
+            
+            professor = { nome, email };
+            localStorage.setItem('professor', JSON.stringify(professor));
+            document.getElementById('nomeProfDisplay').textContent = nome;
+            mostrarTela('dashboardProfessor');
+            atualizarDashboard();
+        }
+        
+        function mostrarTelaCriarAula() {
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataAula').value = hoje;
+            mostrarTela('criarAula');
+        }
+        
+        function criarAula() {
+            const materia = document.getElementById('materia').value.trim();
+            const dataAula = document.getElementById('dataAula').value;
+            const horaInicio = document.getElementById('horaInicio').value;
+            const duracao = document.getElementById('duracao').value;
+            const intervalo = parseInt(document.getElementById('intervalo').value);
+            const raio = parseInt(document.getElementById('raioProfessor').value);
+            const local = document.getElementById('localAula').value.trim();
+            const lat = parseFloat(document.getElementById('latitudeProfessor').value);
+            const lon = parseFloat(document.getElementById('longitudeProfessor').value);
+            
+            if (!materia || !dataAula || !horaInicio) {
+                mostrarErro('erroCriarAula', 'Preencha todos os campos obrigatórios!');
+                return;
+            }
+            
+            const aulaId = Date.now().toString();
+            const linkAula = `${window.location.origin}${window.location.pathname}?aula=${aulaId}`;
+            
+            aulaAtiva = {
+                id: aulaId,
+                materia,
+                dataAula,
+                horaInicio,
+                duracao,
+                intervalo,
+                raio,
+                local,
+                latitude: lat,
+                longitude: lon,
+                link: linkAula,
+                criada: new Date().toLocaleString('pt-BR')
+            };
+            
+            parametrosAula = {
+                materia,
+                horaInicio,
+                duracao,
+                intervalo,
+                raio,
+                local,
+                latitude: lat,
+                longitude: lon,
+                dataAula
+            };
+            
+            localStorage.setItem('aulaAtiva', JSON.stringify(aulaAtiva));
+            localStorage.setItem('parametrosAula', JSON.stringify(parametrosAula));
+            presencas = {};
+            localStorage.setItem('presencas', JSON.stringify(presencas));
+            
+            mostrarTela('dashboardProfessor');
+            atualizarDashboard();
+        }
+        
+        function atualizarDashboard() {
+            if (!professor) return;
+            
+            document.getElementById('nomeProfDisplay').textContent = professor.nome;
+            
+            if (aulaAtiva && aulaAtiva.id) {
+                document.getElementById('semAula').style.display = 'none';
+                document.getElementById('aulaAtiva').style.display = 'block';
+                
+                const [h, m] = aulaAtiva.horaInicio.split(':');
+                const [dh, dm] = aulaAtiva.duracao.split(':');
+                const horaFim = new Date(0, 0, 0, parseInt(h) + parseInt(dh), parseInt(m) + parseInt(dm)).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+                
+                document.getElementById('infoAulaAtiva').innerHTML = `
+                    <strong>${aulaAtiva.materia}</strong><br>
+                    📅 ${new Date(aulaAtiva.dataAula).toLocaleDateString('pt-BR')}<br>
+                    ⏰ ${aulaAtiva.horaInicio} até ${horaFim}
+                `;
+                
+                document.getElementById('linkAula').textContent = aulaAtiva.link;
+                atualizarTabelaAlunos();
+            } else {
+                document.getElementById('semAula').style.display = 'block';
+                document.getElementById('aulaAtiva').style.display = 'none';
+            }
+        }
+        
+        function atualizarTabelaAlunos() {
+            const tbody = document.getElementById('tabelaAlunos');
+            tbody.innerHTML = '';
+            
+            if (Object.keys(presencas).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Nenhum aluno registrado ainda</td></tr>';
+                return;
+            }
+            
+            for (let key in presencas) {
+                const p = presencas[key];
+                let status = '⏳ Aguardando';
+                let statusClass = 'status-aguardando';
+                
+                if (p.entrada && p.saida) {
+                    status = '✅ Presente';
+                    statusClass = 'status-presente';
+                } else if (!p.entrada) {
+                    status = '❌ Ausente';
+                    statusClass = 'status-ausente';
+                }
+                
+                const row = `
+                    <tr>
+                        <td>${p.nome}</td>
+                        <td>${p.rgm}</td>
+                        <td>${p.entrada || '-'}</td>
+                        <td>${p.saida || '-'}</td>
+                        <td><span class="${statusClass}">${status}</span></td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            }
+        }
+        
+        function copiarLink() {
+            const link = document.getElementById('linkAula').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link copiado com sucesso!');
+            });
+        }
+        
+        function encerrarAula() {
+            if (!confirm('Tem certeza que deseja encerrar a aula?')) return;
+            
+            // Calcular 70% da duração
+            const [dh, dm] = aulaAtiva.duracao.split(':');
+            const minutosDuracao = parseInt(dh) * 60 + parseInt(dm);
+            const minutos70 = Math.round(minutosDuracao * 0.7);
+            
+            // Verificar presença (com intervalo)
+            let mensagemConfirmacao = 'Confirmação de Presença enviada aos alunos:\n\n';
+            let presentes = 0;
+            
+            for (let key in presencas) {
+                const p = presencas[key];
+                
+                if (p.entrada && p.saida) {
+                    // Calcular tempo presente
+                    const [eh, em] = p.entrada.split(':');
+                    const [sh, sm] = p.saida.split(':');
+                    const entradaMin = parseInt(eh) * 60 + parseInt(em);
+                    const saidaMin = parseInt(sh) * 60 + parseInt(sm);
+                    const tempoPresente = saidaMin - entradaMin - aulaAtiva.intervalo;
+                    
+                    if (tempoPresente >= minutos70) {
+                        mensagemConfirmacao += `✅ ${p.nome}\n`;
+                        presentes++;
+                    }
+                }
+            }
+            
+            localStorage.removeItem('aulaAtiva');
+            localStorage.removeItem('parametrosAula');
+            aulaAtiva = null;
+            
+            alert(mensagemConfirmacao);
+            mostrarTela('dashboardProfessor');
+            atualizarDashboard();
+        }
+        
+        function voltarDashboard() {
+            mostrarTela('dashboardProfessor');
+        }
+        
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                professor = null;
+                document.getElementById('senhaProfessor').value = '';
+                mostrarTela('loginProfessor');
+            }
+        }
+        
+        // ============ ALUNO ============
+        function telaAluno() {
+            const params = new URLSearchParams(window.location.search);
+            const aulaId = params.get('aula');
+            
+            if (!aulaId || !aulaAtiva || aulaAtiva.id !== aulaId) {
+                mostrarErro('erroAluno', 'Link inválido ou aula expirada!');
+                return;
+            }
+            
+            document.getElementById('materiaAluno').textContent = aulaAtiva.materia;
+            const [h, m] = aulaAtiva.horaInicio.split(':');
+            const [dh, dm] = aulaAtiva.duracao.split(':');
+            const horaFim = new Date(0, 0, 0, parseInt(h) + parseInt(dh), parseInt(m) + parseInt(dm)).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+            document.getElementById('horarioAluno').textContent = `${aulaAtiva.horaInicio} até ${horaFim}`;
+            document.getElementById('localAluno').textContent = aulaAtiva.local;
+            document.getElementById('infoAulaAluno').style.display = 'block';
+            
+            mostrarTela('telaAluno');
+        }
+        
+        function registrarEntradaAluno() {
+            const nome = document.getElementById('nomeAluno').value.trim();
+            const rgm = document.getElementById('rgmAluno').value.trim();
+            
+            if (!nome || !rgm) {
+                mostrarErro('erroAluno', 'Preencha todos os campos!');
+                return;
+            }
+            
+            const agora = new Date();
+            const h = String(agora.getHours()).padStart(2, '0');
+            const m = String(agora.getMinutes()).padStart(2, '0');
+            const s = String(agora.getSeconds()).padStart(2, '0');
+            const horaAtual = `${h}:${m}:${s}`;
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const distancia = calcularDistancia(
+                        aulaAtiva.latitude,
+                        aulaAtiva.longitude,
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+                    
+                    if (distancia > aulaAtiva.raio) {
+                        mostrarErro('erroAluno', `Você está a ${distancia.toFixed(1)}m de distância. Máximo permitido: ${aulaAtiva.raio}m`);
+                        return;
+                    }
+                    
+                    const key = `${nome}-${rgm}`;
+                    if (!presencas[key]) {
+                        presencas[key] = { nome, rgm, entrada: null, saida: null };
+                    }
+                    presencas[key].entrada = horaAtual;
+                    localStorage.setItem('presencas', JSON.stringify(presencas));
+                    
+                    mostrarConfirmacao(`Entrada registrada às ${horaAtual}`);
+                },
+                () => {
+                    mostrarErro('erroAluno', 'Erro ao acessar GPS. Verifique as permissões.');
+                }
+            );
+        }
+        
+        function registrarSaidaAluno() {
+            const nome = document.getElementById('nomeAluno').value.trim();
+            const rgm = document.getElementById('rgmAluno').value.trim();
+            
+            if (!nome || !rgm) {
+                mostrarErro('erroAluno', 'Preencha todos os campos!');
+                return;
+            }
+            
+            const agora = new Date();
+            const h = String(agora.getHours()).padStart(2, '0');
+            const m = String(agora.getMinutes()).padStart(2, '0');
+            const s = String(agora.getSeconds()).padStart(2, '0');
+            const horaAtual = `${h}:${m}:${s}`;
+            
+            navigator.geolocation.getCurrentPosition(
+                () => {
+                    const key = `${nome}-${rgm}`;
+                    if (!presencas[key]) {
+                        presencas[key] = { nome, rgm, entrada: null, saida: null };
+                    }
+                    presencas[key].saida = horaAtual;
+                    localStorage.setItem('presencas', JSON.stringify(presencas));
+                    
+                    mostrarConfirmacao(`Saída registrada às ${horaAtual}`);
+                },
+                () => {
+                    mostrarErro('erroAluno', 'Erro ao acessar GPS.');
+                }
+            );
+        }
+        
+        function mostrarConfirmacao(mensagem) {
+            document.getElementById('detalhesConfirmacao').innerHTML = `<p>${mensagem}</p>`;
+            mostrarTela('confirmacaoPresenca');
+        }
+        
+        function novaPresenca() {
+            document.getElementById('nomeAluno').value = '';
+            document.getElementById('rgmAluno').value = '';
+            mostrarTela('telaAluno');
+        }
+        
+        function voltarTelaAluno() {
+            mostrarTela('loginProfessor');
+        }
+        
+        // ============ UTILITÁRIOS ============
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371000;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+        
+        function mostrarTela(telaId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(telaId).classList.add('active');
+        }
+        
+        function mostrarErro(elementoId, mensagem) {
+            const el = document.getElementById(elementoId);
+            el.textContent = mensagem;
+            el.style.display = 'block';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Verificar se é acesso por link de aula
+        window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            const aulaId = params.get('aula');
+            
+            if (aulaId) {
+                telaAluno();
+            } else if (professor && professor.email) {
+                mostrarTela('dashboardProfessor');
+                atualizarDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
