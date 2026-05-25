@@ -57,6 +57,10 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 ## Registro de Presença
 ![Presença](docs/presencas.png)
 
+## fire base (database do sistema)
+![Presença](docs/database.png)
+
+
 ---
 
 # 🛠️ Plataforma Utilizada
