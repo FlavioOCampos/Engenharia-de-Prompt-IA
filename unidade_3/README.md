@@ -153,20 +153,35 @@ A colaboração ocorreu através de compartilhamento do repositório GitHub e re
 # 📁 Estrutura do Projeto
 
 ```bash
-ProjetoModulo3/
+Engenharia-de-Prompt-IA/
 │
-├── README.md
-│
-├── docs/
-│   ├── login.png
-│   ├── professor.png
-│   ├── aluno.png
-│   ├── minhas_aulas.png
-│   └── presencas.png
+├── unidade_1/
+├── unidade_2/
 │
 ├── unidade_3/
-│   ├── professor.html
+│   │
+│   ├── assets/
+│   ├── backup/
+│   ├── docs/
+│   │   ├── login.png
+│   │   ├── professor.png
+│   │   ├── aluno.png
+│   │   ├── minhas_aulas.png
+│   │   └── presencas.png
+│   │
+│   ├── js/
+│   │
+│   ├── README.md
 │   ├── aluno.html
-│   ├── style.css
-│   └── script.js
+│   ├── dashboard.html
+│   ├── firebase.js
+│   ├── index.html
+│   ├── login.html
+│   ├── lowcode.html
+│   ├── mapa.html
+│   ├── professor.html
+│   ├── script.js
+│   └── style.css
+│
+└── README.md
 ```
