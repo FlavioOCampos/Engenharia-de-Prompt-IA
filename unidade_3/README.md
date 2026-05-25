@@ -106,8 +106,8 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 A primeira versão do AulaTrack foi desenvolvida utilizando Claude Haiku, focando em validação rápida da ideia utilizando HTML, CSS e JavaScript puro com armazenamento local.
 
-🔗 Protótipo inicial:
-[Visualizar Protótipo Claude Haiku](./prototipo_inicial/index.html)
+### 🔗 Acessar Protótipo Inicial
+➡️ [Clique aqui para abrir o protótipo desenvolvido com Claude Haiku](https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/prototipo_inicial/index.html)
 
 ---
 
