@@ -102,6 +102,15 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 # 🧠 Processo de Desenvolvimento com IA
 
+## 🔹 Protótipo Inicial — Claude Haiku
+
+A primeira versão do AulaTrack foi desenvolvida utilizando Claude Haiku, focando em validação rápida da ideia utilizando HTML, CSS e JavaScript puro com armazenamento local.
+
+🔗 Protótipo inicial:
+[Visualizar Protótipo Claude Haiku](./prototipo_inicial/index.html)
+
+---
+
 O desenvolvimento do AulaTrack passou por diferentes etapas utilizando ferramentas de Inteligência Artificial generativa.
 
 ## 🔹 Primeira Versão — Claude Haiku
