@@ -100,6 +100,46 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 # 🧠 Reflexão Crítica
 
+# 🧠 Processo de Desenvolvimento com IA
+
+O desenvolvimento do AulaTrack passou por diferentes etapas utilizando ferramentas de Inteligência Artificial generativa.
+
+## 🔹 Primeira Versão — Claude Haiku
+
+O protótipo inicial foi desenvolvido utilizando o modelo Claude Haiku, focando em:
+
+- Estrutura inicial em HTML/CSS/JavaScript
+- Interface visual inicial
+- Fluxo básico de professor e aluno
+- Simulação local utilizando `localStorage`
+
+Essa versão permitiu validar rapidamente a ideia do sistema e estruturar o fluxo principal da aplicação.
+
+Entretanto, foram identificadas limitações relacionadas à persistência de dados, escalabilidade e sincronização em tempo real.
+
+---
+
+## 🔹 Evolução do Projeto — ChatGPT
+
+Posteriormente, o projeto foi evoluído utilizando ChatGPT, permitindo:
+
+- Integração completa com Firebase
+- Implementação do Firestore em tempo real
+- Autenticação de usuários
+- Sistema de retomada de aulas
+- Organização modular do projeto
+- Deploy utilizando GitHub Pages
+- Melhorias visuais e estruturais
+- Implementação de funcionalidades avançadas de GPS
+
+Essa evolução demonstrou como diferentes modelos de IA podem contribuir em etapas distintas do desenvolvimento de software, desde prototipagem rápida até refinamento arquitetural e implementação de funcionalidades avançadas.
+
+---
+
+## 🚀 Resultado Final
+
+O AulaTrack evoluiu de um protótipo simples local para um sistema funcional online com persistência, sincronização em tempo real e arquitetura mais próxima de aplicações reais.
+
 O desenvolvimento do AulaTrack demonstrou como plataformas e serviços de desenvolvimento rápido podem acelerar significativamente a criação de soluções funcionais.
 
 O uso do Firebase possibilitou implementar autenticação, banco de dados em tempo real e sincronização entre usuários sem necessidade de infraestrutura própria.
