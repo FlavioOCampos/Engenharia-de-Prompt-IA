@@ -1,6 +1,28 @@
 
 # 📍 AulaTrack - Sistema Inteligente de Presença com GPS
 
+# Sistema Inteligente de Controle de Presença com Firebase e Geolocalização
+
+## Disciplina
+Engenharia de Prompt para Inteligência Artificial
+
+## Curso
+[Seu curso aqui — ex: Ciência da Computação / Arquitetura e Urbanismo]
+
+## Instituição
+Centro Universitário UDF
+
+## Aluno
+Flávio de Oliveira Campos
+
+## Professor(a)
+[Nome da professora]
+
+## Unidade
+Unidade 3 — Desenvolvimento de Solução com IA, Firebase e Geolocalização
+
+---
+
 ## 📚 Desafio Escolhido
 
 O projeto AulaTrack foi desenvolvido com o objetivo de modernizar o controle de presença em salas de aula utilizando recursos de geolocalização, autenticação e banco de dados em tempo real.
