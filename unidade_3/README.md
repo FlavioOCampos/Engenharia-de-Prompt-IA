@@ -104,10 +104,6 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 ## 🔹 Protótipo Inicial — GitHub Copilot / Claude Haiku
 
-## 🔹 Primeira Versão — GitHub + Claude Haiku
-
-## 🔹 Primeira Versão — GitHub + Claude Haiku
-
 A primeira versão do AulaTrack foi desenvolvida utilizando GitHub integrado ao modelo Claude Haiku, focando em prototipagem rápida utilizando HTML, CSS e JavaScript puro.
 
 Essa etapa permitiu validar rapidamente:
