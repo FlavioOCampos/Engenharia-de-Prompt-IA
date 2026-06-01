@@ -254,9 +254,11 @@ A colaboração ocorreu através de compartilhamento do repositório GitHub e re
 
 [https://SEU-USUARIO.github.io/SEU-REPOSITORIO/](https://flavioocampos.github.io/Engenharia-de-Prompt-IA/unidade_3/login.html)
 
-# 📄 Documentação Complementar
+## Protótipo
 
-➡️ [Clique aqui para acessar o PDF completo de defesa e documentação do projeto](./AulaTrack_Defesa_Final_Atualizada.pdf)
+As telas do protótipo estão documentadas por imagens na pasta `docs`.
+
+![Tela do protótipo](docs/telas-aplicacao.png)
 
 ---
 
