@@ -7,7 +7,7 @@
 Engenharia de Prompt para Inteligência Artificial
 
 ## Curso
-[Seu curso aqui — ex: Ciência da Computação / Arquitetura e Urbanismo]
+[[Seu curso aqui — ex: Ciência da Computação / Arquitetura e Urbanismo](https://cursos.udf.edu.br/grad-analise-e-desenvolvimento-de-sistemas-udf/p)]
 
 ## Instituição
 Centro Universitário UDF
@@ -16,7 +16,7 @@ Centro Universitário UDF
 Flávio de Oliveira Campos
 
 ## Professor(a)
-[Nome da professora]
+[[Nome da professora](https://github.com/Kadidjah)]
 
 ## Unidade
 Unidade 3 — Desenvolvimento de Solução com IA, Firebase e Geolocalização
@@ -62,34 +62,12 @@ A solução permite que professores criem aulas ativas e que alunos registrem pr
 
 ---
 
-# 🖼️ Prints do Sistema
-
-## Tela de Login
-![Login](docs/login.png)
-
-## Painel do Professor
-![Professor](docs/professor.png)
-
-## Painel do Aluno
-![Aluno](docs/aluno.png)
-
-## Minhas Aulas
-![Aulas](docs/minhas_aulas.png)
-
-## Registro de Presença
-![Presença](docs/presencas.png)
-
-## fire base (database do sistema)
-![Presença](docs/database.png)
-
-
----
-
 # 🛠️ Plataforma Utilizada
 
 ## Tecnologias Utilizadas
 
-- HTML5
+- Github Copilit: Claude haiku 4.5
+- ChatGPT baseado no GPT-5.5
 - CSS3
 - JavaScript
 - Firebase Authentication
